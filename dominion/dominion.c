@@ -680,7 +680,65 @@ int getCost(int cardNumber)
 
     return -1;
 }
+static int playAmbassador(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer)
+{
+	int numberCards = 0;		//used to check if player has enough cards to discard
 
+	if (choice2 > 2 || choice2 < 0)
+	{
+		return -1;
+	}
+
+	if (choice1 == handPos)
+	{
+		return -1;
+	}
+
+	for (int i = 0; i < state->handCount[currentPlayer]; i++)
+	{
+		if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
+		{
+			numberCards++;
+		}
+	}
+	if (numberCards < choice2)
+	{
+		return -1;
+	}
+
+	if (DEBUG)
+		printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
+
+	//increase supply count for choosen card by amount being discarded
+	state->supplyCount[state->hand[currentPlayer][choice1]] += choice2;
+
+	//each other player gains a copy of revealed card
+	for (int i = 0; i < state->numPlayers; i++)
+	{
+		if (i != currentPlayer)
+		{
+			gainCard(state->hand[currentPlayer][choice1], state, 0, i);
+		}
+	}
+
+	//discard played card from hand
+	discardCard(handPos, currentPlayer, state, 0);
+
+	//remove copies of cards from hand of current player that were returned to supply
+	for (int i = 0; i < choice2; i++)
+	{
+		for (int j = 0; j < state->handCount[currentPlayer]; j++)
+		{
+			if (state->hand[currentPlayer][j] == state->hand[currentPlayer][choice1])
+			{
+				discardCard(j, currentPlayer, state, 1);
+				break;
+			}
+		}
+	}
+
+	return 0;
+}
 static int playMinion(int choice1, struct gameState *state, int currentPlayer, int handPos)
 {
 
@@ -738,7 +796,8 @@ static int playBaron(int choice, struct gameState *state, int currentPlayer)
 {
 	state->numBuys++;//Increase buys by 1!
 	int cardDiscarded = 0;//Flag for discard set!
-	if (choice) { //Boolean true or going to discard an estate
+	if (choice) //Boolean true or going to discard an estate
+	{
 		int p = 0;//Iterator for hand!
 
 		for (p = 0; p < state->handCount[currentPlayer];  p++)
@@ -748,7 +807,8 @@ static int playBaron(int choice, struct gameState *state, int currentPlayer)
 				state->coins += 4;//Add 4 coins to the amount of coins
 				state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
 				state->discardCount[currentPlayer]++;
-				for (; p < state->handCount[currentPlayer]; p++) {
+				for (; p < state->handCount[currentPlayer]; p++)
+				{
 					state->hand[currentPlayer][p] = state->hand[currentPlayer][p + 1];
 				}
 				state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
@@ -1192,62 +1252,66 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case ambassador:
-        j = 0;		//used to check if player has enough cards to discard
+		return playAmbassador(choice1, choice2, state, handPos, currentPlayer);
+#if 0
+		j = 0;		//used to check if player has enough cards to discard
 
-        if (choice2 > 2 || choice2 < 0)
-        {
-            return -1;
-        }
+		if (choice2 > 2 || choice2 < 0)
+		{
+			return -1;
+		}
 
-        if (choice1 == handPos)
-        {
-            return -1;
-        }
+		if (choice1 == handPos)
+		{
+			return -1;
+		}
 
-        for (i = 0; i < state->handCount[currentPlayer]; i++)
-        {
-            if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
-            {
-                j++;
-            }
-        }
-        if (j < choice2)
-        {
-            return -1;
-        }
+		for (i = 0; i < state->handCount[currentPlayer]; i++)
+		{
+			if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
+			{
+				j++;
+			}
+		}
+		if (j < choice2)
+		{
+			return -1;
+		}
 
-        if (DEBUG)
-            printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
+		if (DEBUG)
+			printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
 
-        //increase supply count for choosen card by amount being discarded
-        state->supplyCount[state->hand[currentPlayer][choice1]] += choice2;
+		//increase supply count for choosen card by amount being discarded
+		state->supplyCount[state->hand[currentPlayer][choice1]] += choice2;
 
-        //each other player gains a copy of revealed card
-        for (i = 0; i < state->numPlayers; i++)
-        {
-            if (i != currentPlayer)
-            {
-                gainCard(state->hand[currentPlayer][choice1], state, 0, i);
-            }
-        }
+		//each other player gains a copy of revealed card
+		for (i = 0; i < state->numPlayers; i++)
+		{
+			if (i != currentPlayer)
+			{
+				gainCard(state->hand[currentPlayer][choice1], state, 0, i);
+			}
+		}
 
-        //discard played card from hand
-        discardCard(handPos, currentPlayer, state, 0);
+		//discard played card from hand
+		discardCard(handPos, currentPlayer, state, 0);
 
-        //trash copies of cards returned to supply
-        for (j = 0; j < choice2; j++)
-        {
-            for (i = 0; i < state->handCount[currentPlayer]; i++)
-            {
-                if (state->hand[currentPlayer][i] == state->hand[currentPlayer][choice1])
-                {
-                    discardCard(i, currentPlayer, state, 1);
-                    break;
-                }
-            }
-        }
+		//trash copies of cards returned to supply
+		for (j = 0; j < choice2; j++)
+		{
+			for (i = 0; i < state->handCount[currentPlayer]; i++)
+			{
+				if (state->hand[currentPlayer][i] == state->hand[currentPlayer][choice1])
+				{
+					discardCard(i, currentPlayer, state, 1);
+					break;
+				}
+			}
+		}
 
-        return 0;
+		return 0;
+#endif // 0
+
 
     case cutpurse:
 
