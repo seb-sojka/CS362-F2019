@@ -681,6 +681,8 @@ int getCost(int cardNumber)
     return -1;
 }
 
+//Discard the entire hand of a player
+//Inputs: Player index and pointer to state of game
 static void discardHand(int player, struct gameState *state)
 {
 	while (state->handCount[player] > 0)
@@ -689,6 +691,8 @@ static void discardHand(int player, struct gameState *state)
 	}
 }
 
+//Player draws that may cards to hand
+//Inputs: Player index, pointer to state of game, and the number of cards to draw
 static void drawNumberCards(int player, struct gameState *state, int numberCards)
 {
 	for (int i = 0; i < numberCards; i++)
@@ -697,7 +701,12 @@ static void drawNumberCards(int player, struct gameState *state, int numberCards
 	}
 }
 
-static int playMine(struct gameState *state, int handPos, int choice1, int choice2)
+//The effect of playing the mine card. 
+//Player can trash a treasure from their hand. If so, you can gain a treasure up to 3 coins cost 
+//than trashed treasure card.
+//Inputs: pointer to game state, hand postion of card, choice1 related to card to trash, choice2 realted to card to gain
+//Output: -1 if error, 0 if no error
+static int mineEffect(struct gameState *state, int handPos, int choice1, int choice2)
 {
 	int currentPlayer = whoseTurn(state);
 	int cardTrash = state->hand[currentPlayer][choice1];  //store card we will trash
@@ -728,7 +737,13 @@ static int playMine(struct gameState *state, int handPos, int choice1, int choic
 	return 0;
 }
 
-static int playTribute(struct gameState *state, int handPos)
+//The effect of playing the card tribute
+//An action card in which the player to left of player that played the card discards and reveals the top 2 cards of 
+//their deck. For each differently named card revealed, player either: gain 2 actions for an action card, 
+//2 coins for a treasure card, or draw 2 cards for a victory card.
+//Inputs: pointer to game state, hand postion of card to be played
+//Output: -1 if error, 0 if no error
+static int tributeEffect(struct gameState *state, int handPos)
 {
 	int currentPlayer = whoseTurn(state);
 	int nextPlayer = currentPlayer + 1;
@@ -805,16 +820,17 @@ static int playTribute(struct gameState *state, int handPos)
 	return 0;
 }
 
-static int playAmbassador(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer)
+//The effect of playing the card ambassador
+//This Action-Attack card allows player to reveal a card and then return up to 2 copies from your hand to Supply. 
+//The other players then gain a copy of it. If there is not enough cards, deal them out in order starting to your left.
+//Inputs: pointer to game state, hand postion of card to be played, the index of the current player, choice1 is the hand postion
+//of card to be reaveled, choice2 is the number of cards to return to supply 
+//Output: -1 if error, 0 if no error
+static int ambassadorEffect(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer)
 {
 	int numberCards = 0;		//used to check if player has enough cards to discard
 
-	if (choice2 > 2 || choice2 < 0)
-	{
-		return -1;
-	}
-
-	if (choice1 == handPos)
+	if (choice2 > 2 || choice2 < 0 || choice1 == handPos)
 	{
 		return -1;
 	}
@@ -864,7 +880,13 @@ static int playAmbassador(int choice1, int choice2, struct gameState *state, int
 
 	return 0;
 }
-static int playMinion(int choice1, struct gameState *state, int currentPlayer, int handPos)
+
+//The effect of playing the card minion
+//This action - attack card allows player to play another action. Player then chooses one: 
+//either gain 2 gold for the turn or discard their hand drawing 4 more cards. If the latter is chosen, 
+//then the other players with at 5 cards in hand are forced to discard their hand and draw 4 cards.
+//Output: -1 if error, 0 if no error
+static int minionEffect(int choice1, struct gameState *state, int currentPlayer, int handPos)
 {
 
 	//+1 action
@@ -898,7 +920,12 @@ static int playMinion(int choice1, struct gameState *state, int currentPlayer, i
 	return 0;
 }
 
-static int playBaron(int choice, struct gameState *state, int currentPlayer)
+//The effect of playing the card baron
+//This action - attack card allows player to play another action. Player then chooses one: 
+//either gain 2 gold for the turn or discard their hand drawing 4 more cards. If the latter is chosen, 
+//then the other players with at 5 cards in hand are forced to discard their hand and draw 4 cards.
+//Output: -1 if error, 0 if no error
+static int baronEffect(int choice, struct gameState *state, int currentPlayer)
 {
 	state->numBuys++;//Increase buys by 1!
 	int cardDiscarded = 0;//Flag for discard set!
@@ -1068,7 +1095,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return -1;
 
     case mine:
-		return playMine(state, handPos, choice1, choice2);
+		return mineEffect(state, handPos, choice1, choice2);
 #if 0
 		j = state->hand[currentPlayer][choice1];  //store card we will trash
 
@@ -1155,7 +1182,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case baron:
-		return playBaron(choice1, state, currentPlayer);
+		return baronEffect(choice1, state, currentPlayer);
 #if 0
 		state->numBuys++;//Increase buys by 1!
 		if (choice1 > 0) { //Boolean true or going to discard an estate
@@ -1223,7 +1250,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case minion:
-		return playMinion(choice1, state, currentPlayer, handPos);
+		return minionEffect(choice1, state, currentPlayer, handPos);
 #if 0
 		//+1 action
 		state->numActions++;
@@ -1300,7 +1327,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case tribute:
-		return playTribute(state, handPos);
+		return tributeEffect(state, handPos);
 #if 0
 		if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
 			if (state->deckCount[nextPlayer] > 0) {
@@ -1360,7 +1387,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 #endif // 0
 
     case ambassador:
-		return playAmbassador(choice1, choice2, state, handPos, currentPlayer);
+		return ambassadorEffect(choice1, choice2, state, handPos, currentPlayer);
 #if 0
 		j = 0;		//used to check if player has enough cards to discard
 
