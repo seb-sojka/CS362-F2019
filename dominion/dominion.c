@@ -861,7 +861,7 @@ static int ambassadorEffect(int revealPos, int numberCards, struct gameState *st
 	}
 
 	if (DEBUG)
-		printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
+		printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][revealPos]);
 
 	//increase supply count for choosen card by amount being discarded
 	state->supplyCount[state->hand[currentPlayer][revealPos]] += numberCardsHand;
