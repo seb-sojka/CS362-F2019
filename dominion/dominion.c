@@ -814,7 +814,7 @@ static int tributeEffect(struct gameState *state, int handPos)
 
 		else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == great_hall) //Victory Card Found
 		{
-			drawNumberCards(currentPlayer, state, 2)
+			drawNumberCards(currentPlayer, state, 2);
 		}
 		else //Action Card
 		{
@@ -864,7 +864,7 @@ static int ambassadorEffect(int revealPos, int numberCards, struct gameState *st
 		printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][choice1]);
 
 	//increase supply count for choosen card by amount being discarded
-	state->supplyCount[state->hand[currentPlayer][choice1]] += numberCardsHand;
+	state->supplyCount[state->hand[currentPlayer][revealPos]] += numberCardsHand;
 
 	//each other player gains a copy of revealed card
 	for (int i = 0; i <= state->numPlayers; i++)
