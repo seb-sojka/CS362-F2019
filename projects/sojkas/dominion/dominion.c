@@ -807,7 +807,7 @@ static int tributeEffect(struct gameState *state, int handPos)
 
 	for (int i = 0; i <= 2; i++)
 	{
-		if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) //Treasure cards
+		if (tributeRevealedCards[i] > copper && tributeRevealedCards[i] < gold)//Treasure cards
 		{
 			state->coins += 2;
 		}
@@ -963,10 +963,6 @@ static int baronEffect(int choiceDiscard, struct gameState *state, int currentPl
 			gainCard(estate, state, 0, currentPlayer);
 
 			state->supplyCount[estate]--;//Decrement estates
-			if (supplyCount(estate, state) == 0)
-			{
-				isGameOver(state);
-			}
 		}
 	}
 	return 0;
