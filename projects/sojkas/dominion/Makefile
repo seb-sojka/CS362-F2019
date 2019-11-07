@@ -10,7 +10,19 @@ playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
 #To run playdom you need to entere: ./playdom <any integer number> like ./playdom 10*/
 
-testDrawCard: testDrawCard.c dominion.o rngs.o
+testUnitTest1: unittest1.c dominion.o rngs.o
+	gcc  -o unit1 -g  unittest1.c dominion.o rngs.o $(CFLAGS)
+	./unit1 &> unittestresult1.out
+	gcov dominion.c >> unittestresult1.out
+	cat dominion.c.gcov >> unittestresult1.out
+	
+testUnitTest2: unittest2.c dominion.o rngs.o
+	gcc  -o unit2 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
+	./unit2 &> unittestresult2.out
+	gcov dominion.c >> unittestresult2.out
+	cat dominion.c.gcov >> unittestresult2.out
+
+testDrawCard: testdrawcard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
 
 interface.o: interface.h interface.c

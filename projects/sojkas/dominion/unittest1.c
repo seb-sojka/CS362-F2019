@@ -20,9 +20,9 @@
 
 #define TESTCARD "baron"
 
-const increaseCoins 4
-const cardDiscardEstate 2
-const cardDiscard 1
+#define increaseCoins 4
+#define cardDiscardEstate 2
+#define cardDiscard 1
 
 void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 {
@@ -37,13 +37,7 @@ void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 }
 
 int main() {
-    int newCards = 0;
-    int discarded = 1;
-    int xtraCoins = 0;
-    int shuffledCards = 0;
-
-    int i, j, m;
-    int choiceDiscard = 0;
+    int i;
     int seed = 1000;
     int numPlayers = 2;
     int currentPlayer = 0;
@@ -81,9 +75,9 @@ int main() {
 	memcpy(testGame.hand[currentPlayer], estates, sizeof(int) * maxHandCount);
 	baronEffect(1, &testGame, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate);
-	printf("coin count = %d, expected = %d\n", testGame->coins, game->coins + increaseCoins);
+	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
 
-	newAssertEqualInt(testGame->coins, game->coins + increaseCoins, "coin count");
+	newAssertEqualInt(testGame.coins, game.coins + increaseCoins, "coin count");
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "Hand Size");
 	
 	printf("TEST 2: Gain an estate\n");
@@ -94,9 +88,9 @@ int main() {
 
 	baronEffect(0, &testGame, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
-	printf("coin count = %d, expected = %d\n", testGame->coins, game->coins);
+	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame->discard[player][ testGame->discardCount[player] - 1] == estate)
+	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
 	{
 		printf("Last card in discard is not estate");
 	}
@@ -105,9 +99,9 @@ int main() {
 		printf("Last card in discard is estate");
 	}
 	printf("Last card in discard is expected to be estate\n");
-	newAssertEqualInt(testGame->coins, game->coins + increaseCoins, "coin count");
+	newAssertEqualInt(testGame.coins, game.coins, "coin count");
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame->discard[player][ testGame->discardCount[player] - 1], estate, "Estate was gained");
+	newAssertEqualInt(testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1], estate, "Estate was gained");
 	
 	printf("TEST 3: Try to discard an estate without 1\n");
 	memcpy(&testGame, &game, sizeof(struct gameState));
@@ -117,9 +111,9 @@ int main() {
 	memcpy(testGame.hand[currentPlayer], barons, sizeof(int) * maxHandCount);
 	baronEffect(1, &testGame, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
-	printf("coin count = %d, expected = %d\n", testGame->coins, game->coins);
+	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame->discard[player][ testGame->discardCount[player] - 1] == estate)
+	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
 	{
 		printf("Last card in discard is not estate");
 	}
@@ -127,8 +121,8 @@ int main() {
 	{
 		printf("Last card in discard is estate");
 	}
-		printf("Last card in discard is expected to be estate\n");
-	newAssertEqualInt(testGame->coins, game->coins + increaseCoins, "coin count");
+	printf("Last card in discard is expected to be estate\n");
+	newAssertEqualInt(testGame.coins, game.coins, "coin count");
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame->discard[player][ testGame->discardCount[player] - 1], estate, "Estate was gained");
+	newAssertEqualInt(testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1], estate, "Estate was gained");
 }

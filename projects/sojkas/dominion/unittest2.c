@@ -38,13 +38,7 @@ void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 }
 
 int main() {
-    int newCards = 0;
-    int discarded = 1;
-    int xtraCoins = 0;
-    int shuffledCards = 0;
-
-    int i, j, m;
-    int choiceDiscard = 0;
+    int i;
     int seed = 1000;
     int numPlayers = 2;
     int currentPlayer = 0;
@@ -77,10 +71,14 @@ int main() {
 	
 	printf("TEST 1: Gain 2 coins\n");
 	
-	minionEffect(1, testGame, currentPlayer, 0);
+	minionEffect(1, &testGame, currentPlayer, 0);
 	
-	
-	
-	
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
+	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
+	printf("coin count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
+
+	newAssertEqualInt(testGame.coins, game.coins + increaseCoins, "coin count");
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "Hand Size");
+	newAssertEqualInt(testGame.numActions, game.numActions + gainAction, "Action count");
 	
 }
