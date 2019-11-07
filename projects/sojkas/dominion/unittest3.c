@@ -42,7 +42,6 @@ int main() {
     int seed = 1000;
     int numPlayers = 2;
     int currentPlayer = 0;
-	int otherPlayer = 1;
 	int maxHandCount = 5;
 	
 	printf ("TESTING baron card to see if only 1 estate is removed from the supply\n");
@@ -67,6 +66,7 @@ int main() {
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
+	
 	printf("Testing Card is %s\n", TESTCARD);
 	
 	printf("TEST 1: Gain 2 coins\n");
@@ -75,43 +75,10 @@ int main() {
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
-	printf("action count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
+	printf("coin count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
 
 	newAssertEqualInt(testGame.coins, game.coins + increaseCoins, "coin count");
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "Hand Size");
 	newAssertEqualInt(testGame.numActions, game.numActions + gainAction, "Action count");
-	
-	printf("TEST 2: Discard hand and draw 4 cards\n");
-	memcpy(&testGame, &game, sizeof(struct gameState));
-
-	minionEffect(0, &testGame, currentPlayer, 0);
-	
-	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], newHandSize);
-	printf("hand count = %d, expected = %d\n", testGame.handCount[otherPlayer], newHandSize);
-	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
-	printf("action count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
-
-	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[otherPlayer], newHandSize, "Current Player Hand Size");
-	newAssertEqualInt(testGame.handCount[currentPlayer], newHandSize, "Current Player Hand Size");
-	newAssertEqualInt(testGame.numActions, game.numActions + gainAction, "Action count");
-	
-	printf("TEST 3: Discard hand and draw 4 cards with other player have less than 5 cards\n");
-	
-	game.handCount[otherPlayer] = 4;
-	memcpy(&testGame, &game, sizeof(struct gameState));
-
-	minionEffect(0, &testGame, currentPlayer, 0);
-	
-	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], newHandSize);
-	printf("hand count = %d, expected = %d\n", testGame.handCount[otherPlayer], 3);
-	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
-	printf("action count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
-
-	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[otherPlayer], game.handCount[otherPlayer], "Other Player Hand Size");
-	newAssertEqualInt(testGame.handCount[currentPlayer], newHandSize, "Current Player Hand Size");
-	newAssertEqualInt(testGame.numActions, game.numActions + gainAction, "Action count");
-	
 	
 }

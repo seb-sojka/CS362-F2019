@@ -707,7 +707,7 @@ static void drawNumberCards(int player, struct gameState *state, int numberCards
 //Inputs: pointer to game state, hand postion of card, trashPos is the postion in hand of card to trash
 //cardToGain realtes to card to gain
 //Output: -1 if error, 0 if no error
-static int mineEffect(struct gameState *state, int handPos, int trashPos, int cardToGain)
+int mineEffect(struct gameState *state, int handPos, int trashPos, int cardToGain)
 {
 	int currentPlayer = whoseTurn(state);
 	int cardTrash = state->hand[currentPlayer][trashPos];  //store card we will trash
@@ -833,7 +833,7 @@ static int tributeEffect(struct gameState *state, int handPos)
 //Inputs: pointer to game state, hand postion of card to be played, the index of the current player, revealPos is the hand postion
 //of card to be reaveled, choice2 is the number of cards to return to supply 
 //Output: -1 if error, 0 if no error
-static int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, int handPos, int currentPlayer)
+int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, int handPos, int currentPlayer)
 {
 	int numberCardsHand = 0;		//used to check if player has enough cards to discard
 

@@ -132,4 +132,8 @@ int baronEffect(int choiceDiscard, struct gameState *state, int currentPlayer);
 
 int minionEffect(int gainCoins, struct gameState *state, int currentPlayer, int handPos);
 
+int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, int handPos, int currentPlayer);
+
+int mineEffect(struct gameState *state, int handPos, int trashPos, int cardToGain);
+
 #endif
