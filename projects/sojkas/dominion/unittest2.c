@@ -1,13 +1,13 @@
 /*
- * unittest1.c
+ * unittest2.c
  * To test the function for the Minion Card, baronEffect.
  */
 
 /*
  * Include the following lines in your makefile:
  *
- * unittest2: unittest1.c dominion.o rngs.o
- *      gcc -o unittest1 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
+ * unittest2: unittest2.c dominion.o rngs.o
+ *      gcc -o unittest2 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
  */
 
 #include "dominion.h"
