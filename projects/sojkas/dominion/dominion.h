@@ -136,4 +136,6 @@ int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, in
 
 int mineEffect(struct gameState *state, int handPos, int trashPos, int cardToGain);
 
+int tributeEffect(struct gameState *state, int handPos);
+
 #endif

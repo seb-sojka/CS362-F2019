@@ -18,8 +18,9 @@
 #include "rngs.h"
 #include <stdlib.h>
 
-#define TESTCARD "minion"
+#define TESTCARD "ambassador"
 
+#define MAXPLAYER 4
 #define increaseCoins 2
 #define cardDiscard 1
 #define newHandSize 4
@@ -40,45 +41,195 @@ void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 int main() {
     int i;
     int seed = 1000;
-    int numPlayers = 2;
-    int currentPlayer = 0;
-	int maxHandCount = 5;
 	
-	printf ("TESTING baron card to see if only 1 estate is removed from the supply\n");
-	int minions[maxHandCount];
-	for (i = 0; i <  maxHandCount; i++)
-    {
-		minions[i] = minion;
+    int numPlayers = rand() % (MAXPLAYER - 1) + 1;
+    int currentPlayer =  rand() % numPlayers ;
+	int randHandSize = rand() % (MAX_HAND - 2) + 2;
+	printf("Number Player: %d\n", numPlayers);
+	int newHand[randHandSize];
+		
+	int k[10] = {baron, embargo, ambassador, minion, mine, cutpurse,
+		sea_hag, tribute, smithy, council_room};
+	int allCards[17];
+	memcpy(allCards, k, sizeof k);
+	
+	//Add curse, treasures, and victory cards to posssible cards to return
+	for(i = curse; i <= gold; i++)
+	{
+		allCards[10 + i] = i;
 	}
 	
-	struct gameState game, testGame;
+	for(i = 0; i < 17; i++)
+	{
+		printf("Card Number %d\n", allCards[i]);
+	}
 	
-	int k[10] = {baron, embargo, village, minion, mine, cutpurse,
-			sea_hag, tribute, smithy, council_room};
+	int cardTrash = allCards[rand()%17];
+	struct gameState game, testGame;
+
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &game);
-	for(i = 0; i < numPlayers; i++)
-	{
-		game.handCount[i] = maxHandCount;
-	}
-	//Set entire hand to estate expect baron card to play
-	memcpy(game.hand[currentPlayer], minions, sizeof(int) * maxHandCount);
-	
-	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	
 	printf("Testing Card is %s\n", TESTCARD);
 	
-	printf("TEST 1: Gain 2 coins\n");
+	printf("TEST 1: Return an acceptable amount of cards\n");
+	game.handCount[currentPlayer] = randHandSize;
 	
-	minionEffect(1, &testGame, currentPlayer, 0);
+	for (i = 0; i <  randHandSize; i++)
+	{
+		newHand[i] = cardTrash;
+	}
 	
-	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
-	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
-	printf("coin count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
-
-	newAssertEqualInt(testGame.coins, game.coins + increaseCoins, "coin count");
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "Hand Size");
-	newAssertEqualInt(testGame.numActions, game.numActions + gainAction, "Action count");
+	int ambassPos = rand() % randHandSize;
+	newHand[ambassPos] = ambassador;
+	
+	//Set entire hand to estate expect baron card to play
+	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
+	
+	int revealPos = ambassPos;
+	while (revealPos == ambassPos)
+	{
+		revealPos = rand() % randHandSize;
+	}
+	int returnNum = rand() % 3;
+	
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	
+	ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum);
+	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + 1 - numPlayers);
+	
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum, "hand count");
+	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + 1 - numPlayers, "supply count");
+	
+	for(i = 0; i < numPlayers; i++)
+	{
+		if( i != currentPlayer)
+		{
+			printf("card number of discard for player %d = %d, expected =%d\n", i, testGame.discard[i][ testGame.discardCount[i] - 1], cardTrash);
+			newAssertEqualInt(testGame.discard[i][ testGame.discardCount[i] - 1], cardTrash, "players gaining correct card");
+		}
+	}
+	
+	printf("TEST 2: Trying to return over 2 cards\n");
+	// initialize a game state and player cards
+	initializeGame(numPlayers, k, seed, &game);
+	randHandSize = rand() % (MAX_HAND - 2) + 2;
+	cardTrash = allCards[rand()%17];
+	game.handCount[currentPlayer] = randHandSize;
+	
+	for (i = 0; i <  randHandSize; i++)
+	{
+		newHand[i] = cardTrash;
+	}
+	
+	ambassPos = rand() % randHandSize;
+	newHand[ambassPos] = ambassador;
+	
+	//Set entire hand to estate expect baron card to play
+	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
+	
+	revealPos = ambassPos;
+	while (revealPos == ambassPos)
+	{
+		revealPos = rand() % randHandSize;
+	}
+	returnNum = rand() % (randHandSize - 3) + 3;
+	
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	int ret = ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	if(ret == -1)
+	{
+		printf("Ambassador return error. Return -1\n");
+	}
+	else
+	{
+		printf("Ambassador return success. Return 0\n");
+	}
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
+	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash]);
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
+	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash], "supply count");
+	
+	printf("TEST 3: Trying to return over negative cards\n");
+	// initialize a game state and player cards
+	initializeGame(numPlayers, k, seed, &game);
+	randHandSize = rand() % (MAX_HAND - 2) + 2;
+	cardTrash = allCards[rand()%17];
+	game.handCount[currentPlayer] = randHandSize;
+	
+	for (i = 0; i <  randHandSize; i++)
+	{
+		newHand[i] = cardTrash;
+	}
+	
+	ambassPos = rand() % randHandSize;
+	newHand[ambassPos] = ambassador;
+	
+	//Set entire hand to estate expect baron card to play
+	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
+	
+	revealPos = ambassPos;
+	while (revealPos == ambassPos)
+	{
+		revealPos = rand() % randHandSize;
+	}
+	returnNum = -1;
+	
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	ret = ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	if(ret == -1)
+	{
+		printf("Ambassador return error. Return -1\n");
+	}
+	else
+	{
+		printf("Ambassador return success. Return 0\n");
+	}
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
+	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash]);
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
+	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash], "supply count");
+	
+	printf("TEST 4: Try to reveal the played card\n");
+	// initialize a game state and player cards
+	initializeGame(numPlayers, k, seed, &game);
+	randHandSize = rand() % (MAX_HAND - 2) + 2;
+	cardTrash = allCards[rand()%17];
+	game.handCount[currentPlayer] = randHandSize;
+	
+	for (i = 0; i <  randHandSize; i++)
+	{
+		newHand[i] = cardTrash;
+	}
+	
+	ambassPos = rand() % randHandSize;
+	newHand[ambassPos] = ambassador;
+	
+	//Set entire hand to estate expect baron card to play
+	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
+	
+	revealPos = ambassPos;
+	while (revealPos == ambassPos)
+	{
+		revealPos = rand() % randHandSize;
+	}
+	returnNum = rand() % 3;
+	
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	ret = ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	if(ret == -1)
+	{
+		printf("Ambassador return error. Return -1\n");
+	}
+	else
+	{
+		printf("Ambassador return success. Return 0\n");
+	}
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
+	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash]);
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
+	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash], "supply count");
+	
 	
 }
