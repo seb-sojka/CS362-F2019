@@ -17,12 +17,15 @@
 #include <assert.h>
 #include "rngs.h"
 #include <stdlib.h>
+#include <time.h>
+
 
 #define TESTCARD "Mine"
 
 #define CARDDISCARD 2
 #define MAXPLAYER 4
 #define NUMTREASURES 3
+#define GAINCARD 1
 
 void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 {
@@ -37,6 +40,7 @@ void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 }
 
 int main() {
+	srand(time(NULL));
     int i;
     int seed = 1000;
     int numPlayers = rand() % (MAXPLAYER-1) + 2;
@@ -70,7 +74,7 @@ int main() {
 	
 	int randTreasure = rand() % NUMTREASURES;
 	int gainTreasure = 0;
-	int minePos = rand() % randHandSize;
+	int minePos = rand() % 3;
 	if(randTreasure == 0)
 	{
 		memcpy(newHand, coppers, sizeof(int) * randHandSize);
@@ -94,6 +98,7 @@ int main() {
 	}
 	
 	game.handCount[currentPlayer] = randHandSize;
+	game.whoseTurn = currentPlayer;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	int randTrash = rand() % randHandSize;
@@ -101,10 +106,11 @@ int main() {
 	{
 		randTrash = rand() % randHandSize;
 	}
-	
-	mineEffect(&testGame, minePos, randTrash, gainTreasure);
-	
-	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD);
+	printf("Trash Num Card: %d\n", testGame.hand[currentPlayer][randTrash]);
+	int ret = mineEffect(&testGame, minePos, randTrash, gainTreasure);
+	printf("function return = %d, expected = %d\n", ret, 0);
+
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + GAINCARD);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD, "hand count");
 	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 2] == gainTreasure)
 	{
@@ -123,6 +129,9 @@ int main() {
 	{
 		printf("The mine card was not the last card discarded\n");
 	}
+	printf("played card number = %d, expected = %d\n", testGame.playedCards[testGame.playedCardCount - 1], mine);
+	newAssertEqualInt(testGame.playedCards[testGame.playedCardCount - 1], mine, "card played number");
+	
 	
 	printf("TEST 2: Try to gain a non-treasure\n");
 	int cardGain = rand() % 27;
@@ -160,25 +169,22 @@ int main() {
 	{
 		randTrash = rand() % randHandSize;
 	}
+	game.whoseTurn = currentPlayer;
 	game.handCount[currentPlayer] = randHandSize;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
-	int ret = mineEffect(&testGame, minePos, randTrash, cardGain);
-	
-	if(ret == -1)
-	{
-		printf("Mine return error. Return -1\n");
-	}
-	else
-	{
-		printf("Mine return success. Return 0\n");
-	}
+	ret = mineEffect(&testGame, minePos, randTrash, cardGain);
+
+	printf("function return = %d, expected = %d\n", ret, -1);
+	newAssertEqualInt(ret, -1, "function return");
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
 	printf("supply count of gain card = %d, expected = %d\n", testGame.supplyCount[cardGain], game.supplyCount[cardGain]);
 	newAssertEqualInt(testGame.supplyCount[cardGain], game.supplyCount[cardGain], "supply count of gained card");
+	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
+	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
 	
 	printf("TEST 3: Try to trash a non-treasure\n");
 	int cardTrash = rand() % 27;
@@ -198,26 +204,23 @@ int main() {
 		randTrash = rand() % randHandSize;
 	}
 	newHand[randTrash] = cardTrash;
+	game.whoseTurn = currentPlayer;
 	game.handCount[currentPlayer] = randHandSize;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
 	ret = mineEffect(&testGame, minePos, randTrash, cardGain);
 	
-	if(ret == -1)
-	{
-		printf("Mine return error. Return -1\n");
-	}
-	else
-	{
-		printf("Mine return success. Return 0\n");
-	}
+	printf("function return = %d, expected = %d\n", ret, -1);
+	newAssertEqualInt(ret, -1, "function return");
+
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
 	printf("supply count of gain card = %d, expected = %d\n", testGame.supplyCount[cardGain], game.supplyCount[cardGain]);
 	newAssertEqualInt(testGame.supplyCount[cardGain], game.supplyCount[cardGain], "supply count of gained card");
-	
+	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
+	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
 	printf("TEST 4: Try to gain treasure greater than 3 of the trash card\n");
 	
 	printf("Card number %d to trash\n", cardTrash);
@@ -230,23 +233,49 @@ int main() {
 	{
 		randTrash = rand() % randHandSize;
 	}
+	game.whoseTurn = currentPlayer;
 	game.handCount[currentPlayer] = randHandSize;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	gainTreasure = gold;
 	ret = mineEffect(&testGame, minePos, randTrash, gainTreasure);
 	
-	if(ret == -1)
-	{
-		printf("Mine return error. Return -1\n");
-	}
-	else
-	{
-		printf("Mine return success. Return 0\n");
-	}
+	printf("function return = %d, expected = %d\n", ret, 0);
+	newAssertEqualInt(ret, -1, "function return");
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
 	printf("supply count of gain card = %d, expected = %d\n", testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure]);
 	newAssertEqualInt(testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure], "supply count of gained card");
+	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
+	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
+	
+	printf("TEST 5: Try to gain treasure that is cost 4 more than the trash card\n");
+	
+	printf("Card number %d to trash\n", cardTrash);
+	minePos = rand() % randHandSize;
+	memcpy(newHand, silvers, sizeof(int) * randHandSize);
+	newHand[minePos] = mine;
+
+	randTrash = rand() % randHandSize;
+	while(randTrash == minePos)
+	{
+		randTrash = rand() % randHandSize;
+	}
+	game.whoseTurn = currentPlayer;
+	game.handCount[currentPlayer] = randHandSize;
+	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	gainTreasure = testTres4;
+	ret = mineEffect(&testGame, minePos, randTrash, gainTreasure);
+	
+	printf("function return = %d, expected = %d\n", ret, 0);
+	newAssertEqualInt(ret, -1, "function return");
+	
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
+	printf("supply count of gain card = %d, expected = %d\n", testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure]);
+	newAssertEqualInt(testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure], "supply count of gained card");
+	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
+	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
 }

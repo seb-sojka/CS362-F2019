@@ -637,6 +637,8 @@ int getCost(int cardNumber)
         return 0;
     case silver:
         return 3;
+	case testTres4:
+		return 7;
     case gold:
         return 6;
     case adventurer:
@@ -718,18 +720,24 @@ int mineEffect(struct gameState *state, int handPos, int trashPos, int cardToGai
 	//Check if trashed card is a trasure, otherwise return -1 (error)
 	if (cardTrash < copper || cardTrash > gold) 
 	{
+		printf("Trash Error\n");
+		printf("Trash Card Num: %d\n", cardTrash);
 		return -1;
 	}
 	
 	//Check if card to gain is a treasure , otherwise return -1 (error)
 	if (cardToGain > treasure_map || cardToGain < curse)
 	{
+		printf("Gain Error\n");
 		return -1;
 	}
 
 	//Check to if card to gain cost less than or equal 3 more coins than the trashed card, other return -1 (error)
-	if ((getCost(cardTrash) + 4) >= getCost(cardToGain))
+	if ((getCost(cardTrash) + 4) < getCost(cardToGain))
 	{
+		printf("Trash Card Value: %d", getCost(cardTrash));
+		printf("Gain Card Value: %d", getCost(cardToGain));
+		printf("Cost Error\n");
 		return -1;
 	}
 

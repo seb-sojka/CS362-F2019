@@ -23,6 +23,7 @@ enum CARD
 
     copper,
     silver,
+	testTres4,
     gold,
 
     adventurer,
