@@ -1,4 +1,4 @@
-/*
+ /*
  * unittest1.c
  * To test the function for the Baron Card, baronEffect.
  */
@@ -156,6 +156,34 @@ int main() {
 	
 	printf("TEST 4: Try to gain a estate with no supply of estate\n");
 	game.supplyCount[estate] = 0;
+	game.handCount[currentPlayer] = handCount;
+	//Set entire hand to estate expect baron card to play
+	memcpy(game.hand[currentPlayer], barons, sizeof(int) * handCount);
+	memcpy(&testGame, &game, sizeof(struct gameState));
+
+	baronEffect(1, &testGame, currentPlayer);
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
+	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
+	
+	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
+	{
+		printf("Last card in discard is not estate");
+	}
+	else
+	{
+		printf("Last card in discard is estate");
+	}
+	printf("Last card in discard is expected to be estate\n");
+	newAssertEqualInt(testGame.coins, game.coins, "coin count");
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate removed from supply");
+	
+	printf("TEST 5: Check to see if game ends after getting the last estate and 2 other supplies are empty\n");
+	// initialize a game state and player cards
+	initializeGame(numPlayers, k, seed, &game);
+	game.supplyCount[estate] = 1;
+	game.supplyCount[k[0]] = 0;
+	game.supplyCount[k[1]] = 0;
 	game.handCount[currentPlayer] = handCount;
 	//Set entire hand to estate expect baron card to play
 	memcpy(game.hand[currentPlayer], barons, sizeof(int) * handCount);

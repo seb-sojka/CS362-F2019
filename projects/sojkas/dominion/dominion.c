@@ -410,6 +410,9 @@ int isGameOver(struct gameState *state) {
     }
     if ( j >= 3)
     {
+		if (DEBUG) { //Debug statements
+			printf("Game is Over");
+		}
         return 1;
     }
 
@@ -837,7 +840,6 @@ int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, in
 {
 	int numberCardsHand = 0;		//used to check if player has enough cards to discard
 
-
 	//Check to make sure the number of cards to return are between 0 and 2 
 	//and the card to reveal is not the same one being played
 	if (numberCards > 2 || numberCards < 0 || revealPos == handPos)
@@ -848,7 +850,7 @@ int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, in
 	//Count the number of cards to return to supply are in hand
 	for (int i = 0; i < state->handCount[currentPlayer]; i++)
 	{
-		if (i != handPos && i == state->hand[currentPlayer][revealPos] && i != revealPos)
+		if (i != handPos && state->hand[currentPlayer][i] == state->hand[currentPlayer][revealPos] && i != revealPos)
 		{
 			numberCardsHand++;
 		}
@@ -861,8 +863,11 @@ int ambassadorEffect(int revealPos, int numberCards, struct gameState *state, in
 	}
 
 	if (DEBUG)
+	{
 		printf("Player %d reveals card number: %d\n", currentPlayer, state->hand[currentPlayer][revealPos]);
-
+		printf("Number Card return: %d\n", numberCardsHand);
+		printf("Num Card Revealed: %d\n", state->hand[currentPlayer][revealPos]);
+	}
 	//increase supply count for choosen card by amount being discarded
 	state->supplyCount[state->hand[currentPlayer][revealPos]] += numberCardsHand;
 

@@ -17,6 +17,7 @@
 #include <assert.h>
 #include "rngs.h"
 #include <stdlib.h>
+#include <time.h>
 
 #define TESTCARD "ambassador"
 
@@ -41,7 +42,8 @@ void newAssertEqualInt(int testVar, int expectedVar, char *testDefine)
 int main() {
     int i;
     int seed = 1000;
-	
+	srand(time(NULL));
+
     int numPlayers = rand() % (MAXPLAYER - 1) + 2;
     int currentPlayer =  rand() % numPlayers ;
 	int randHandSize = rand() % (MAX_HAND - 2) + 2;
@@ -58,12 +60,7 @@ int main() {
 	{
 		allCards[10 + i] = i;
 	}
-	
-	for(i = 0; i < 17; i++)
-	{
-		printf("Card Number %d\n", allCards[i]);
-	}
-	
+		
 	int cardTrash = allCards[rand()%17];
 	struct gameState game, testGame;
 
@@ -79,7 +76,6 @@ int main() {
 	{
 		newHand[i] = cardTrash;
 	}
-	
 	int ambassPos = rand() % randHandSize;
 	newHand[ambassPos] = ambassador;
 	
@@ -91,16 +87,17 @@ int main() {
 	{
 		revealPos = rand() % randHandSize;
 	}
-	int returnNum = rand() % 3;
+	int returnNum = rand()%3;
+	printf("Num berof cards to return %d\n", returnNum);
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
 	ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum);
-	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + 1 - numPlayers);
+	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + returnNum - (numPlayers - 1));
 	
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum, "hand count");
-	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + 1 - numPlayers, "supply count");
+	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + returnNum - (numPlayers - 1), "supply count");
 	
 	for(i = 0; i < numPlayers; i++)
 	{
@@ -210,10 +207,6 @@ int main() {
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	
 	revealPos = ambassPos;
-	while (revealPos == ambassPos)
-	{
-		revealPos = rand() % randHandSize;
-	}
 	returnNum = rand() % 3;
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
@@ -231,5 +224,46 @@ int main() {
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
 	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash], "supply count");
 	
+	printf("TEST 5: Increase in supply count is correct\n");
 	
+	// initialize a game state and player cards
+	initializeGame(numPlayers, k, seed, &game);
+	int handSize = 50;
+	game.handCount[currentPlayer] = handSize;
+	cardTrash = allCards[rand()%17];
+	for (i = 0; i <  handSize; i++)
+	{
+		newHand[i] = cardTrash;
+	}
+	
+	ambassPos = rand() % handSize;
+	newHand[ambassPos] = ambassador;
+	
+	//Set entire hand to estate expect baron card to play
+	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * handSize);
+	
+	revealPos = ambassPos;
+	while (revealPos == ambassPos)
+	{
+		revealPos = rand() % handSize;
+	}
+	returnNum = rand() % 3;
+	
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	
+	ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum);
+	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + returnNum - (numPlayers - 1));
+	
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum, "hand count");
+	newAssertEqualInt(testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + returnNum - numPlayers, "supply count");
+	
+	for(i = 0; i < numPlayers; i++)
+	{
+		if( i != currentPlayer)
+		{
+			printf("card number of discard for player %d = %d, expected =%d\n", i, testGame.discard[i][ testGame.discardCount[i] - 1], cardTrash);
+			newAssertEqualInt(testGame.discard[i][ testGame.discardCount[i] - 1], cardTrash, "players gaining correct card");
+		}
+	}
 }
