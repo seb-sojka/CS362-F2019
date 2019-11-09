@@ -12,33 +12,28 @@ playdom: dominion.o playdom.c
 
 unitTest1: unittest1.c dominion.o rngs.o
 	gcc  -o unit1 -g  unittest1.c dominion.o rngs.o $(CFLAGS)
-	./unit1 &> unittestresult1.out
-	gcov dominion.c -b -f>> unittestresult1.out
-	cat dominion.c.gcov >> unittestresult1.out
+	./unit1 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
 	
 unitTest2: unittest2.c dominion.o rngs.o
 	gcc  -o unit2 -g  unittest2.c dominion.o rngs.o $(CFLAGS)
-	./unit2 &> unittestresult2.out
-	gcov dominion.c -b -f>> unittestresult2.out
-	cat dominion.c.gcov >> unittestresult2.out
+	./unit2 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
 	
 unitTest3: unittest3.c dominion.o rngs.o
 	gcc  -o unit3 -g  unittest3.c dominion.o rngs.o $(CFLAGS)
-	./unit3 &> unittestresult3.out
-	gcov dominion.c -b -f>> unittestresult3.out
-	cat dominion.c.gcov >> unittestresult3.out
+	./unit3 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
 	
 unitTest4: unittest4.c dominion.o rngs.o
 	gcc  -o unit4 -g  unittest4.c dominion.o rngs.o $(CFLAGS)
-	./unit4 &> unittestresult4.out
-	gcov dominion.c -b -f>> unittestresult4.out
-	cat dominion.c.gcov >> unittestresult4.out
+	./unit4 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
 
 unitTest5: unittest5.c dominion.o rngs.o
 	gcc  -o unit5 -g  unittest5.c dominion.o rngs.o $(CFLAGS)
-	./unit2 &> unittestresult5.out
-	gcov dominion.c -b -f>> unittestresult5.out
-	cat dominion.c.gcov >> unittestresult5.out
+	./unit5 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
 
 testDrawCard: testdrawcard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
@@ -58,4 +53,7 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unit1 unit2 unit3 unit4 unit 5
+
+unittestresults: clean all unitTest1 unitTest2 unitTest3 unitTest4 unitTest5
+	cat dominion.c.gcov >> unittestresult.out

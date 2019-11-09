@@ -1,6 +1,6 @@
 /*
  * unittest2.c
- * To test the function for the Minion Card, baronEffect.
+ * To test the function for the ambassador Card, ambassadorEffect.
  */
 
 /*
@@ -42,7 +42,7 @@ int main() {
     int i;
     int seed = 1000;
 	
-    int numPlayers = rand() % (MAXPLAYER - 1) + 1;
+    int numPlayers = rand() % (MAXPLAYER - 1) + 2;
     int currentPlayer =  rand() % numPlayers ;
 	int randHandSize = rand() % (MAX_HAND - 2) + 2;
 	printf("Number Player: %d\n", numPlayers);
