@@ -201,7 +201,7 @@ int main() {
 	minePos = rand() % randHandSize;
 	memcpy(newHand, coppers, sizeof(int) * randHandSize);
 	newHand[minePos] = mine;
-
+	cardGain = rand() % 3 + 4;
 	randTrash = rand() % randHandSize;
 	while(randTrash == minePos)
 	{
