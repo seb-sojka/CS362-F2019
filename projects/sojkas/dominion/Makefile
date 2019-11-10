@@ -36,7 +36,7 @@ unitTest5: unittest5.c dominion.o rngs.o
 	gcov dominion.c -b -f>> unittestresult.out
 
 testDrawCard: testdrawcard.c dominion.o rngs.o
-	gcc  -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
+	gcc  -o testDrawCard -g  testdrawcard.c dominion.o rngs.o $(CFLAGS)
 
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)

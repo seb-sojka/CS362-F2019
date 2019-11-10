@@ -41,12 +41,12 @@ int main() {
 	srand(time(NULL));
     int i;
     int seed = rand();
-    int numPlayers = rand()%(MAX_PLAYERS-1)+1;
+    int numPlayers = rand()%(MAX_PLAYERS-1)+2;
     int currentPlayer = rand() % numPlayers;
 	int maxHandCount = rand()%MAX_HAND;
-	
+	printf("Number of Players: %d\n", numPlayers);
 	int minions[maxHandCount];
-	for (i = 0; i <  maxHandCount; i++)
+	for (i = 0; i <  MAX_HAND; i++)
     {
 		minions[i] = minion;
 	}
@@ -61,7 +61,7 @@ int main() {
 	{
 		game.handCount[i] = rand()%MAX_HAND;
 	}
-
+	game.whoseTurn = currentPlayer;
 	memcpy(game.hand[currentPlayer], minions, sizeof(int) * maxHandCount);
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
@@ -78,8 +78,8 @@ int main() {
 	
 	for(i = 0; i < numPlayers; i++)
 	{
-		printf("hand count for player %d = %d, expected = %d\n", i, testGame.handCount[i], newHandSize);
-		newAssertEqualInt(testGame.handCount[i], newHandSize, "Hand Size");
+		printf("hand count for player %d = %d, expected = %d\n", i, testGame.handCount[i], game.handCount[i]);
+		newAssertEqualInt(testGame.handCount[i], game.handCount[i], "Hand Size");
 	}
 	newAssertEqualInt(testGame.coins, game.coins + increaseCoins, "coin count");
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "Hand Size");
@@ -87,6 +87,9 @@ int main() {
 	
 	printf("TEST 2: Discard hand and draw 4 cards for all players with 5 cards in hand\n");
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
+	memcpy(game.hand[currentPlayer], minions, sizeof(int) * 5);
+
 	for(i = 0; i < numPlayers; i++)
 	{
 		game.handCount[i] = 5;
@@ -109,10 +112,13 @@ int main() {
 	
 	printf("TEST 3: Discard hand and draw 4 cards for all players with 5 or greater cards in hand\n");
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
 	for(i = 0; i < numPlayers; i++)
 	{
 		game.handCount[i] = rand()%(MAX_HAND-5)+5;
 	}
+	memcpy(game.hand[currentPlayer], minions, sizeof(int) * game.handCount[currentPlayer]);
+
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
 	minionEffect(0, &testGame, currentPlayer, 0);
@@ -131,10 +137,13 @@ int main() {
 	
 	printf("TEST 4: Discard hand and draw 4 cards with other player have less than 5 cards\n");
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
 	for(i = 0; i < numPlayers; i++)
 	{
 		game.handCount[i] = rand()%5;
 	}
+	memcpy(game.hand[currentPlayer], minions, sizeof(int) * game.handCount[currentPlayer]);
+
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
 	minionEffect(0, &testGame, currentPlayer, 0);
@@ -143,8 +152,37 @@ int main() {
 	{
 		if(i != currentPlayer)
 		{
-			printf("hand count for player %d = %d, expected = %d\n", i, testGame.handCount[i], newHandSize);
-			newAssertEqualInt(testGame.handCount[i], newHandSize, "Hand Size");
+			printf("hand count for player %d = %d, expected = %d\n", i, testGame.handCount[i], game.handCount[i]);
+			newAssertEqualInt(testGame.handCount[i], game.handCount[i], "Hand Size");
+		}
+	}
+	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], newHandSize);
+	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
+	printf("action count = %d, expected = %d\n", testGame.numActions, game.numActions + gainAction);
+
+	newAssertEqualInt(testGame.coins, game.coins, "coin count");
+	newAssertEqualInt(testGame.handCount[currentPlayer], newHandSize, "Current Player Hand Size");
+	newAssertEqualInt(testGame.numActions, game.numActions + gainAction, "Action count");
+	
+	printf("TEST 5: Discard hand and draw 4 cards with other player have 4 cards\n");
+	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
+	for(i = 0; i < numPlayers; i++)
+	{
+		game.handCount[i] = 4;
+	}
+	memcpy(game.hand[currentPlayer], minions, sizeof(int) * game.handCount[currentPlayer]);
+
+	memcpy(&testGame, &game, sizeof(struct gameState));
+
+	minionEffect(0, &testGame, currentPlayer, 0);
+	
+	for(i = 0; i < numPlayers; i++)
+	{
+		if(i != currentPlayer)
+		{
+			printf("hand count for player %d = %d, expected = %d\n", i, testGame.handCount[i], game.handCount[i]);
+			newAssertEqualInt(testGame.handCount[i], game.handCount[i], "Hand Size");
 		}
 	}
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], newHandSize);

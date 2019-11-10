@@ -78,10 +78,29 @@ int main() {
 	baronEffect(1, &testGame, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
-
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != estate)
+	{
+		printf("The estate was not discarded\n");
+	}
+	else
+	{
+		printf("The estate was discarded\n");
+	}
+	printf("Estate is expected to be discarded");
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != baron)
+	{
+		printf("The baron is not in discard\n");
+	}
+	else
+	{
+		printf("The baron is not in discard\n");
+	}
+	printf("Baron is expected to be discarded");
 	newAssertEqualInt(testGame.coins, game.coins + increaseCoins, "coin count");
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "Hand Size");
-	
+	printf("estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate]);
+
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate removed from supply");
 	printf("TEST 2: Gain an estate\n");
 	game.handCount[currentPlayer] = handCount;
 	//Set entire hand to estate expect baron card to play
@@ -92,18 +111,29 @@ int main() {
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != estate)
 	{
-		printf("Last card in discard is not estate");
+		printf("The estate was not discarded\n");
 	}
 	else
 	{
-		printf("Last card in discard is estate");
+		printf("The estate was discarded\n");
 	}
-	printf("Last card in discard is expected to be estate\n");
+	printf("Estate is expected to be discarded");
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != baron)
+	{
+		printf("The baron is not in discard\n");
+	}
+	else
+	{
+		printf("The baron is not in discard\n");
+	}
+	printf("Baron is expected to be discarded");
 	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1], estate, "Estate was gained");
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "hand size");
+	printf("estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate] - 1);
+
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate] - 1, "Estate removed from supply");
 	
 	printf("TEST 3: Try to discard an estate without 1\n");
 	memcpy(&testGame, &game, sizeof(struct gameState));
@@ -115,20 +145,29 @@ int main() {
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != estate)
 	{
-		printf("Last card in discard is not estate");
+		printf("The estate was not discarded\n");
 	}
 	else
 	{
-		printf("Last card in discard is estate");
+		printf("The estate was discarded\n");
 	}
-	printf("Last card in discard is expected to be estate\n");
+	printf("Estate is expected to be discarded");
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != baron)
+	{
+		printf("The baron is not in discard\n");
+	}
+	else
+	{
+		printf("The baron is not in discard\n");
+	}
+	printf("Baron is expected to be discarded");
 	printf("Estate Supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate] - 1);
 	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1], estate, "Estate was gained");
-	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate] - 1, "Estate was removed from supply");
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "hand size");
+
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate] - 1, "Estate removed from supply");
 	
 	printf("TEST 4: Try to gain a estate with no supply of estate\n");
 	game.supplyCount[estate] = 0;
@@ -141,19 +180,29 @@ int main() {
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != estate)
 	{
-		printf("Last card in discard is not estate");
+		printf("The estate was not discarded\n");
 	}
 	else
 	{
-		printf("Last card in discard is estate");
+		printf("The estate was discarded\n");
 	}
-	printf("Last card in discard is expected to be estate\n");
+	printf("Estate is not expected in discarded");
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != baron)
+	{
+		printf("The baron is not in discard\n");
+	}
+	else
+	{
+		printf("The baron is not in discard\n");
+	}
+	printf("Baron is expected to be discarded");
 	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate removed from supply");
-	
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "hand size");
+	printf("estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate]);
+
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate] , "Estate removed from supply");	
 	printf("TEST 4: Try to gain a estate with no supply of estate\n");
 	game.supplyCount[estate] = 0;
 	game.handCount[currentPlayer] = handCount;
@@ -165,19 +214,29 @@ int main() {
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != estate)
 	{
-		printf("Last card in discard is not estate");
+		printf("The estate was not discarded\n");
 	}
 	else
 	{
-		printf("Last card in discard is estate");
+		printf("The estate was discarded\n");
 	}
-	printf("Last card in discard is expected to be estate\n");
+	printf("Estate is expected to be discarded");
+	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != baron)
+	{
+		printf("The baron is not in discard\n");
+	}
+	else
+	{
+		printf("The baron is not in discard\n");
+	}
+	printf("Baron is expected to be discarded");
 	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate removed from supply");
-	
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "hand size");
+	printf("estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate] );
+
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate removed from supply");	
 	printf("TEST 5: Check to see if game ends after getting the last estate and 2 other supplies are empty\n");
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &game);
@@ -193,16 +252,10 @@ int main() {
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
-	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 1] == estate)
-	{
-		printf("Last card in discard is not estate");
-	}
-	else
-	{
-		printf("Last card in discard is estate");
-	}
-	printf("Last card in discard is expected to be estate\n");
 	newAssertEqualInt(testGame.coins, game.coins, "coin count");
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate, "hand size");
-	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate removed from supply");
+	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard, "hand size");
+	printf("estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate] - 1);
+
+	newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate] - 1, "Estate removed from supply");
+	newAssertEqualInt(testGame.supplyCount[estate], 0, "Estate supply count = 0");
 }

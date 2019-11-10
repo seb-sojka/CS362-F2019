@@ -112,6 +112,8 @@ int main() {
 
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + GAINCARD);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD, "hand count");
+	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + CARDDISCARD);
+	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + CARDDISCARD, "discard count");
 	if (testGame.discard[currentPlayer][ testGame.discardCount[currentPlayer] - 2] == gainTreasure)
 	{
 		printf("The correct treasure was gained\n");
@@ -185,6 +187,8 @@ int main() {
 	newAssertEqualInt(testGame.supplyCount[cardGain], game.supplyCount[cardGain], "supply count of gained card");
 	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
 	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
+	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer]);
+	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer], "discard count");
 	
 	printf("TEST 3: Try to trash a non-treasure\n");
 	int cardTrash = rand() % 27;
@@ -221,6 +225,9 @@ int main() {
 	newAssertEqualInt(testGame.supplyCount[cardGain], game.supplyCount[cardGain], "supply count of gained card");
 	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
 	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
+	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer]);
+	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer], "discard count");
+
 	printf("TEST 4: Try to gain treasure greater than 3 of the trash card\n");
 	
 	printf("Card number %d to trash\n", cardTrash);
@@ -249,7 +256,9 @@ int main() {
 	newAssertEqualInt(testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure], "supply count of gained card");
 	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
 	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
-	
+	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer]);
+	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer], "discard count");
+
 	printf("TEST 5: Try to gain treasure that is cost 4 more than the trash card\n");
 	
 	printf("Card number %d to trash\n", cardTrash);
@@ -278,4 +287,7 @@ int main() {
 	newAssertEqualInt(testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure], "supply count of gained card");
 	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
 	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
+	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer]);
+	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer], "discard count");
+
 }

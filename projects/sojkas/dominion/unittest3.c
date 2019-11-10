@@ -71,7 +71,7 @@ int main() {
 	
 	printf("TEST 1: Return an acceptable amount of cards\n");
 	game.handCount[currentPlayer] = randHandSize;
-	
+	game.whoseTurn = currentPlayer;
 	for (i = 0; i <  randHandSize; i++)
 	{
 		newHand[i] = cardTrash;
@@ -88,7 +88,6 @@ int main() {
 		revealPos = rand() % randHandSize;
 	}
 	int returnNum = rand()%3;
-	printf("Num berof cards to return %d\n", returnNum);
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
@@ -111,6 +110,7 @@ int main() {
 	printf("TEST 2: Trying to return over 2 cards\n");
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
 	randHandSize = rand() % (MAX_HAND - 2) + 2;
 	cardTrash = allCards[rand()%17];
 	game.handCount[currentPlayer] = randHandSize;
@@ -151,6 +151,7 @@ int main() {
 	printf("TEST 3: Trying to return over negative cards\n");
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
 	randHandSize = rand() % (MAX_HAND - 2) + 2;
 	cardTrash = allCards[rand()%17];
 	game.handCount[currentPlayer] = randHandSize;
@@ -191,6 +192,7 @@ int main() {
 	printf("TEST 4: Try to reveal the played card\n");
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
 	randHandSize = rand() % (MAX_HAND - 2) + 2;
 	cardTrash = allCards[rand()%17];
 	game.handCount[currentPlayer] = randHandSize;
@@ -228,6 +230,7 @@ int main() {
 	
 	// initialize a game state and player cards
 	initializeGame(numPlayers, k, seed, &game);
+	game.whoseTurn = currentPlayer;
 	int handSize = 50;
 	game.handCount[currentPlayer] = handSize;
 	cardTrash = allCards[rand()%17];
