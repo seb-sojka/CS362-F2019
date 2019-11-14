@@ -19,9 +19,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TESTCARD "baron"
+#define TESTCARD "minion"
 
-#define TESTLIMIT 10000
+#define TESTLIMIT 100000
 #define NUMBUYSINCREASE 1
 #define INCREASECOINS 4
 //Discard count after baron when discard estate

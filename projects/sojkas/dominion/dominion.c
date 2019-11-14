@@ -946,6 +946,7 @@ int baronEffect(int choiceDiscard, struct gameState *state, int currentPlayer)
 				}
 				state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
 				state->handCount[currentPlayer]--;
+				cardDiscarded = 1;
 				break;
 			}
 		}
