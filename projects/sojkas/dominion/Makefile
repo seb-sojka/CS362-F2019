@@ -12,7 +12,10 @@ playdom: dominion.o playdom.c
 
 randomTest1: randomtestcard1.c dominion.o rngs.o
 	gcc  -o randUnit1 -g  randomtestcard1.c dominion.o rngs.o $(CFLAGS)
-	./randUnit1 >> randomtestresults.out
+	./randUnit1
+	#>> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
 
 testDrawCard: testdrawcard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
@@ -34,5 +37,4 @@ all: playdom player
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe randUnit1
 
-unittestresults: clean all randomTest1
-	cat dominion.c.gcov >> randomtestresults.out
+randomtestresults: clean all randomTest1

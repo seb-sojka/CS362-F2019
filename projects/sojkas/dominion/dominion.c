@@ -927,7 +927,7 @@ static int minionEffect(int gainCoins, struct gameState *state, int currentPlaye
 //either gain 2 gold for the turn or discard their hand drawing 4 more cards. If the latter is chosen, 
 //then the other players with at 5 cards in hand are forced to discard their hand and draw 4 cards.
 //Output: -1 if error, 0 if no error
-static int baronEffect(int choiceDiscard, struct gameState *state, int currentPlayer)
+int baronEffect(int choiceDiscard, struct gameState *state, int currentPlayer)
 {
 	state->numBuys++;//Increase buys by 1!
 	int cardDiscarded = 0;//Flag for discard set!
