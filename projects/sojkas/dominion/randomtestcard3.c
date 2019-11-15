@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TESTCARD "minion"
+#define TESTCARD "tribute"
 
 #define TESTLIMIT 100000
 #define NUMBUYSINCREASE 0
@@ -137,11 +137,6 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 		{
 			game->supplyCount[i] = rand() % 60;
 		}
-	}
-	if(handPos < 0)
-	{
-		*handPos = rand() % game->deckCount[currentPlayer];
-		game->hand[currentPlayer][*handPos] = minion;
 	}
 	//Number of coins and number of buys random between 0 and 100
 	//Number of number actions is between 1 and 100 as the card to be played
