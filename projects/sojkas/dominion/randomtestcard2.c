@@ -22,10 +22,10 @@
 #define TESTCARD "minion"
 
 #define TESTLIMIT 100000
-#define NUMBUYSINCREASE 1
-#define INCREASECOINS 4
-//Discard count after baron when discard estate
-#define DISCARDNUMESTATE 2
+#define NUMBUYSINCREASE 0
+#define ACTIONINCREASE 1
+#define INCREASECOINS 2
+#define NEWHANDCOUNT 4
 //Discard count after baron when not discard estate
 #define DISCARDNUM 1
 
@@ -52,14 +52,15 @@ int valueInArray(int val, int array[])
 	return 0;
 }
 
-void setUpRandomGame(struct gameState* game, int* estateInHand)
+void setUpRandomGame(struct gameState* game, int* handPos)
 {
-	*estateInHand = 0;
+	*handPos = -1;
 	int seed = rand();
 	int k[10];
 	//Limit cards in play to the cards avialbe to choose from and do not duplicate them.
-	int j = 0;
+	int j = 1;
 	int i = 0;
+	k[0] = minion;
 	while(j < 10)
 	{
 		int newCard = rand() % 20 + 7;
@@ -110,9 +111,9 @@ void setUpRandomGame(struct gameState* game, int* estateInHand)
 		for(j = 0; j < game->handCount[i]; j++)
 		{
 			game->hand[i][j] = allCards[rand()%17];
-			if(i == currentPlayer && game->hand[i][j] == estate)
+			if(i == currentPlayer && game->hand[i][j] == minion && handPos < 0)
 			{
-				*estateInHand = 1;
+				handPos = j;
 			}
 		}
 		for(j = 0; j < game->deckCount[i]; j++)
@@ -144,70 +145,98 @@ void setUpRandomGame(struct gameState* game, int* estateInHand)
 	game->numBuys = rand() % 100;
 }
 
+
+void checkPlayersHand(struct gameState testGame, struct gameState game, int gainCoins)
+{
+	int i;
+	if(gainCoins)
+	{
+		for(i = 0; i < testGame.numPlayers; i++)
+		{
+			if(i != testGame.whoseTurn)
+			{
+				printf("player %d hand count = %d, expected = %d\n", i, testGame.handCount[i], game.handCount[i]);
+				newAssertEqualInt(testGame.handCount[i], game.handCount[i], i + " player hand count");
+				printf("player %d discard count = %d, expected = %d\n", i, testGame.discardCount[i], game.discardCount[i]);
+				newAssertEqualInt(testGame.discardCount[i], game.discardCount[i], i + " player discard count");
+			}
+		}
+	}
+	else
+	{
+		for(i = 0; i < testGame.numPlayers; i++)
+		{
+			if(i != testGame.whoseTurn)
+			{
+				if(game.handCount[i] >= 5)
+				{
+					printf("player %d hand count = %d, expected = %d\n", i, testGame.handCount[i], NEWHANDCOUNT);
+					newAssertEqualInt(testGame.handCount[i], NEWHANDCOUNT, "current player hand count");
+					printf("player %d discard count = %d, expected = %d\n", i, testGame.discardCount[i], game.discardCount[i] + game.handCount[i]);
+					newAssertEqualInt(testGame.discardCount[i], game.discardCount[i] + game.handCount[i], i + " player discard count");
+				}
+				else
+				{
+					printf("player %d hand count = %d, expected = %d\n", i, testGame.handCount[i], game.handCount[i]);
+					newAssertEqualInt(testGame.handCount[i], game.handCount[i], i + " player hand count");
+					printf("player %d discard count = %d, expected = %d\n", i, testGame.discardCount[i], game.discardCount[i]);
+					newAssertEqualInt(testGame.discardCount[i], game.discardCount[i], i + " player discard count");
+				}
+			}
+		}
+	}
+}
+
 int main() 
 {
 	printf("Testing Card is %s\n", TESTCARD);
 
-	int estateInHand = 0;
 	srand(time(NULL));
 	int i;
 	struct gameState game, testGame;
+	int handPos = 0;
 	for(i = 0; i < TESTLIMIT; i++)
 	{
 		printf("Test %d\n", i);
 		memset(&game, 0, sizeof(struct gameState));
 		memset(&testGame, 0, sizeof(struct gameState));
-		setUpRandomGame(&game, &estateInHand);
+		setUpRandomGame(&game, handPos);
 		memcpy(&testGame, &game, sizeof(struct gameState));
 		//Does player try to discard an easte or not.
-		int choiceDiscard = rand() % 2;
+		int gainCoins = rand() % 2;
 		int currentPlayer = game.whoseTurn;
-		baronEffect(choiceDiscard, &testGame, currentPlayer);
+		minionEffect(gainCoins, &testGame, currentPlayer, handPos);
 		//Estate to discard
-		if(choiceDiscard == 1 && estateInHand == 1)
+		if(gainCoins == 1)
 		{
-			printf("Estate Discarded\n");
+			printf("Coins Gained\n");
 			printf("current player coin count = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS);
 			newAssertEqualInt(testGame.coins, game.coins + INCREASECOINS, "current player coin count");
-			printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions);
-			newAssertEqualInt(testGame.numActions, game.numActions, "Number actions");
-			printf("current player hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUMESTATE);
-			newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUMESTATE, "current player hand count");
-			printf("current player discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + DISCARDNUMESTATE);
-			newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + DISCARDNUMESTATE, "current player discard count");
+			printf("current player hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM);
+			newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM, "current player hand count");
+			printf("current player discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + DISCARDNUM);
+			newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + DISCARDNUM, "current player discard count");
 			printf("played Card Count = %d, expected = %d\n", testGame.playedCardCount, game.playedCardCount + 1);
 			newAssertEqualInt(testGame.playedCardCount, game.playedCardCount + 1, "played Card Count");
-			printf("Estate is expected to be discarded\n");
-			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] == estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == estate)
+			printf("Minion is expected to be discarded\n");
+			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == minion)
 			{
-				printf("The estate is in discarded\n");
+				printf("The minion is in discarded\n");
 				printf("INFO: Test Success for baron being in the discard.\n");
 
 			}
 			else
 			{
-				printf("The estate is not in discarded\n");
+				printf("The minion is not in discarded\n");
 				printf("ERROR: Test FAILURE for estate being in the discard.\n");
 			}
-			printf("Baron is expected to be discarded\n");
-			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] == baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == baron)
-			{
-				printf("The baron is in discard\n");
-				printf("INFO: Test Success for baron being in the discard.\n");
-
-			}
-			else
-			{
-				printf("The baron is not in discard\n");
-				printf("ERROR: Test FAILURE for baron being in the discard.\n");
-			}
-			printf("Estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate]);
 			newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate Play count");
+			checkPlayersHand(testGame, game, choiceDiscard);
 		}
 		//Either choice not to discard an estate or does not have one
 		else
 		{
-			printf("Estate Gained\n");
+			printf("Discard Hand\n");
 			printf("current player coin count = %d, expected = %d\n", testGame.coins, game.coins);
 			newAssertEqualInt(testGame.coins, game.coins + INCREASECOINS, "current player coin count");
 			printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions);
@@ -219,6 +248,7 @@ int main()
 			newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + 2, "current player discard count");
 			printf("played Card Count = %d, expected = %d\n", testGame.playedCardCount, game.playedCardCount + 1);
 			newAssertEqualInt(testGame.playedCardCount, game.playedCardCount + 1, "played Card Count");
+			printf("Baron is expected to be discarded\n");
 			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] == estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == estate)
 			{
 				printf("The estate is in discarded\n");
@@ -230,19 +260,6 @@ int main()
 				printf("The estate is not in discarded\n");
 				printf("ERROR: Test FAILURE for estate being in the discard.\n");
 			}
-			printf("Baron is expected to be discarded\n");
-			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] == baron || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == baron)
-			{
-				printf("The baron is in discard\n");
-				printf("INFO: Test Success for baron being in the discard.\n");
-
-			}
-			else
-			{
-				printf("The baron is not in discard\n");
-				printf("ERROR: Test FAILURE for baron being in the discard.\n");
-			}
-			printf("Baron is expected to be discarded\n");
 			printf("Estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate] - 1);
 			if(game.supplyCount[estate] != 0)
 			{
@@ -253,7 +270,9 @@ int main()
 				newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate Play count");
 			}
 		}
-		printf("buy count = %d, expected = %d\n", testGame.numBuys, game.numBuys + 1);
-		newAssertEqualInt(testGame.numBuys, game.numBuys + 1, "buy count");
+		printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions + ACTIONINCREASE);
+		  newAssertEqualInt(testGame.numActions, game.numActions  ACTIONINCREASE, "Number actions");
+		printf("buy count = %d, expected = %d\n", testGame.numBuys, game.numBuys);
+		newAssertEqualInt(testGame.numBuys, game.numBuys, "buy count");
 	}
 }

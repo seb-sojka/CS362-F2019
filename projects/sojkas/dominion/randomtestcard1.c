@@ -219,6 +219,7 @@ int main()
 			newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + 2, "current player discard count");
 			printf("played Card Count = %d, expected = %d\n", testGame.playedCardCount, game.playedCardCount + 1);
 			newAssertEqualInt(testGame.playedCardCount, game.playedCardCount + 1, "played Card Count");
+			printf("estate is expected to be discarded\n");
 			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] == estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == estate)
 			{
 				printf("The estate is in discarded\n");
@@ -242,7 +243,6 @@ int main()
 				printf("The baron is not in discard\n");
 				printf("ERROR: Test FAILURE for baron being in the discard.\n");
 			}
-			printf("Baron is expected to be discarded\n");
 			printf("Estate supply count = %d, expected = %d\n", testGame.supplyCount[estate], game.supplyCount[estate] - 1);
 			if(game.supplyCount[estate] != 0)
 			{
