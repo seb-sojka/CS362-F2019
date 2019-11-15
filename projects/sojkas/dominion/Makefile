@@ -15,7 +15,7 @@ randomTest1: randomtestcard1.c dominion.o rngs.o
 	./randUnit1 >> randomtestresults.out
 	gcov dominion.c -b -f >> randomtestresults.out
 	
-randomTest1: randomtestcard2.c dominion.o rngs.o
+randomTest2: randomtestcard2.c dominion.o rngs.o
 	gcc  -o randUnit2 -g  randomtestcard2.c dominion.o rngs.o $(CFLAGS)
 	./randUnit2 >> randomtestresults.out
 	gcov dominion.c -b -f >> randomtestresults.out
