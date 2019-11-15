@@ -113,7 +113,7 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 			game->hand[i][j] = allCards[rand()%17];
 			if(i == currentPlayer && game->hand[i][j] == minion && handPos < 0)
 			{
-				handPos = j;
+				*handPos = j;
 			}
 		}
 		for(j = 0; j < game->deckCount[i]; j++)
@@ -200,7 +200,7 @@ int main()
 		printf("Test %d\n", i);
 		memset(&game, 0, sizeof(struct gameState));
 		memset(&testGame, 0, sizeof(struct gameState));
-		setUpRandomGame(&game, handPos);
+		setUpRandomGame(&game, &handPos);
 		memcpy(&testGame, &game, sizeof(struct gameState));
 		//Does player try to discard an easte or not.
 		int gainCoins = rand() % 2;
@@ -231,7 +231,7 @@ int main()
 				printf("ERROR: Test FAILURE for estate being in the discard.\n");
 			}
 			newAssertEqualInt(testGame.supplyCount[estate], game.supplyCount[estate], "Estate Play count");
-			checkPlayersHand(testGame, game, choiceDiscard);
+			checkPlayersHand(testGame, game, gainCoins);
 		}
 		//Either choice not to discard an estate or does not have one
 		else
@@ -271,7 +271,7 @@ int main()
 			}
 		}
 		printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions + ACTIONINCREASE);
-		  newAssertEqualInt(testGame.numActions, game.numActions  ACTIONINCREASE, "Number actions");
+		  newAssertEqualInt(testGame.numActions, game.numActions + ACTIONINCREASE, "Number actions");
 		printf("buy count = %d, expected = %d\n", testGame.numBuys, game.numBuys);
 		newAssertEqualInt(testGame.numBuys, game.numBuys, "buy count");
 	}
