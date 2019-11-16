@@ -111,7 +111,7 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 		for(j = 0; j < game->handCount[i]; j++)
 		{
 			game->hand[i][j] = allCards[rand()%17];
-			if(i == currentPlayer && game->hand[i][j] == minion && handPos < 0)
+			if(i == currentPlayer && game->hand[i][j] == minion && *handPos < 0)
 			{
 				*handPos = j;
 			}
@@ -138,9 +138,9 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 			game->supplyCount[i] = rand() % 60;
 		}
 	}
-	if(handPos < 0)
+	if(*handPos < 0)
 	{
-		*handPos = rand() % game->deckCount[currentPlayer];
+		*handPos = rand() % game->handCount[currentPlayer];
 		game->hand[currentPlayer][*handPos] = minion;
 	}
 	//Number of coins and number of buys random between 0 and 100

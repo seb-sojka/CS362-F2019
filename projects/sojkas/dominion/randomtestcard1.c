@@ -21,7 +21,7 @@
 
 #define TESTCARD "baron"
 
-#define TESTLIMIT 10000
+#define TESTLIMIT 100000
 #define NUMBUYSINCREASE 1
 #define INCREASECOINS 4
 //Discard count after baron when discard estate

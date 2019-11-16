@@ -45,5 +45,5 @@ all: playdom player
 clean:
 	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe randUnit1
 
-randomtestresults: clean all randomTest3
+randomtestresults: clean all randomTest1 randomTest2 randomTest3
 	cat dominion.c.gcov >> randomtestresults.out
