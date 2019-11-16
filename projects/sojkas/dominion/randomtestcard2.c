@@ -223,18 +223,6 @@ int main()
 			newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer] + DISCARDNUM, "current player discard count");
 			printf("played Card Count = %d, expected = %d\n", testGame.playedCardCount, game.playedCardCount + 1);
 			newAssertEqualInt(testGame.playedCardCount, game.playedCardCount + 1, "played Card Count");
-			printf("Minion is expected to be discarded\n");
-			if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] == minion)
-			{
-				printf("The minion is in discarded\n");
-				printf("INFO: Test Success for baron being in the discard.\n");
-
-			}
-			else
-			{
-				printf("The minion is not in discarded\n");
-				printf("ERROR: Test FAILURE for estate being in the discard.\n");
-			}
 			checkPlayersHand(testGame, game, gainCoins);
 		}
 		//Either choice not to discard an estate or does not have one
@@ -252,6 +240,7 @@ int main()
 			printf("Minion is expected to be discarded\n");
 			checkPlayersHand(testGame, game, gainCoins);
 		}
+		printf("Minion is expected to be discarded\n");
 		printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions + ACTIONINCREASE);
 		newAssertEqualInt(testGame.numActions, game.numActions + ACTIONINCREASE, "Number actions");
 		printf("buy count = %d, expected = %d\n", testGame.numBuys, game.numBuys);

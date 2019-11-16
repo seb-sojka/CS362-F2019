@@ -183,7 +183,7 @@ void getRevealCards(struct gameState game, int nextPlayer,int *numTreasure,int *
 			game.discard[nextPlayer][i] = -1;
 			game.discardCount[nextPlayer]--;
 		}
-			shuffle(nextPlayer, &game);//Shuffle the deck
+		shuffle(nextPlayer, &game);//Shuffle the deck
 	}
 	tributeRevealedCards[1] = game.deck[nextPlayer][game.deckCount[nextPlayer] - 1];
 
