@@ -6,6 +6,21 @@ rngs.o: rngs.h rngs.c
 dominion.o: dominion.h dominion.c rngs.o
 	gcc -c dominion.c -g  $(CFLAGS)
 
+randomTest1: randomtestcard1.c dominion.o rngs.o
+	gcc  -o randUnit1 -g  randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	./randUnit1 >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+	
+randomTest2: randomtestcard2.c dominion.o rngs.o
+	gcc  -o randUnit2 -g  randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	./randUnit2 >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
+randomTest3: randomtestcard3.c dominion.o rngs.o
+	gcc  -o randUnit3 -g  randomtestcard3.c dominion.o rngs.o $(CFLAGS)
+	./randUnit3 >> randomtestresults.out
+	gcov dominion.c -b -f >> randomtestresults.out
+
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
 #To run playdom you need to entere: ./playdom <any integer number> like ./playdom 10*/
@@ -28,4 +43,7 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe randUnit1 randUnit2 randUnit3
+
+randomtestresults: clean all randomTest1 randomTest2 randomTest3
+	cat dominion.c.gcov >> randomtestresults.out
