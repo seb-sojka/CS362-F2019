@@ -174,7 +174,7 @@ int main()
 		//Does player try to discard an easte or not.
 		int choiceDiscard = rand() % 2;
 		int currentPlayer = game.whoseTurn;
-		callBaron(choiceDiscard, &testGame, currentPlayer);
+		callBaron(choiceDiscard, &testGame, handPos, currentPlayer);
 		//Estate to discard
 		if(choiceDiscard == 1 && estateInHand == 1)
 		{
