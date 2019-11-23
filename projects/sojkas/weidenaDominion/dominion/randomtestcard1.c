@@ -52,8 +52,9 @@ int valueInArray(int val, int array[])
 	return 0;
 }
 
-void setUpRandomGame(struct gameState* game, int* estateInHand)
+void setUpRandomGame(struct gameState* game, int* estateInHand, int* handPos)
 {
+	*handPos = -1;
 	*estateInHand = 0;
 	int seed = rand();
 	int k[10];
@@ -110,6 +111,10 @@ void setUpRandomGame(struct gameState* game, int* estateInHand)
 		for(j = 0; j < game->handCount[i]; j++)
 		{
 			game->hand[i][j] = allCards[rand()%17];
+			if(i == currentPlayer && game->hand[i][j] == baron && *handPos < 0)
+			{
+				*handPos = j;
+			}
 			if(i == currentPlayer && game->hand[i][j] == estate)
 			{
 				*estateInHand = 1;
@@ -123,6 +128,12 @@ void setUpRandomGame(struct gameState* game, int* estateInHand)
 		{
 			game->discard[i][j] = allCards[rand()%17];
 		}
+	}
+	
+	if(*handPos == -1)
+	{
+		*handPos = rand() % game->handCount[currentPlayer];
+		game->hand[currentPlayer][*handPos] = baron;
 	}
 	
 	//Set supply count from its startig supply to 0.
@@ -157,12 +168,13 @@ int main()
 		printf("Test %d\n", i);
 		memset(&game, 0, sizeof(struct gameState));
 		memset(&testGame, 0, sizeof(struct gameState));
-		setUpRandomGame(&game, &estateInHand);
+		int handPos = 0;
+		setUpRandomGame(&game, &estateInHand, &handPos);
 		memcpy(&testGame, &game, sizeof(struct gameState));
 		//Does player try to discard an easte or not.
 		int choiceDiscard = rand() % 2;
 		int currentPlayer = game.whoseTurn;
-		baronEffect(choiceDiscard, &testGame, currentPlayer);
+		callBaron(choiceDiscard, &testGame, currentPlayer);
 		//Estate to discard
 		if(choiceDiscard == 1 && estateInHand == 1)
 		{
