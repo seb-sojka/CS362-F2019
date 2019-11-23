@@ -1,6 +1,6 @@
  /*
  * unittest1.c
- * To test the function for the Baron Card, baronEffect.
+ * To test the function for the Baron Card, callBaron.
  */
 
 /*
@@ -75,7 +75,7 @@ int main() {
 	testGame.handCount[currentPlayer] = handCount;
 	//Set entire hand to estate expect baron card to play
 	memcpy(testGame.hand[currentPlayer], estates, sizeof(int) * handCount);
-	baronEffect(1, &testGame, currentPlayer);
+	callBaron(1, &testGame, handCount - 1, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscardEstate);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
 	if(testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 2] != estate || testGame.discard[currentPlayer][testGame.discardCount[currentPlayer] - 1] != estate)
@@ -107,7 +107,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], estates, sizeof(int) * handCount);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	baronEffect(0, &testGame, currentPlayer);
+	callBaron(0, &testGame, handCount - 1, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
@@ -141,7 +141,7 @@ int main() {
 	testGame.handCount[currentPlayer] = handCount;
 	//Set entire hand to estate expect baron card to play
 	memcpy(testGame.hand[currentPlayer], barons, sizeof(int) * handCount);
-	baronEffect(1, &testGame, currentPlayer);
+	callBaron(1, &testGame, handCount - 1, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
@@ -176,7 +176,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], estates, sizeof(int) * handCount);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	baronEffect(0, &testGame, currentPlayer);
+	callBaron(0, &testGame, handCount - 1, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
@@ -210,7 +210,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], barons, sizeof(int) * handCount);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	baronEffect(1, &testGame, currentPlayer);
+	callBaron(1, &testGame, handCount - 1, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
@@ -248,7 +248,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], barons, sizeof(int) * handCount);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	baronEffect(1, &testGame, currentPlayer);
+	callBaron(1, &testGame,handCount - 1, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins);
 	
