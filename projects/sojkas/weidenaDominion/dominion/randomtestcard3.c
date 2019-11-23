@@ -233,7 +233,7 @@ int main()
 			nextPlayer = 0;
 		}
 		getRevealCards(game, nextPlayer, &numTreasure, &numAction, &numVictory);
-		tributeEffect(&testGame, handPos);
+		callTribute(0, 0, &testGame, handPos, current, nextPlayer);
 		printf("next player card count = %d, expected = %d\n", testGame.deckCount[nextPlayer], game.deckCount[nextPlayer] - NUMBERCARDS);
 		newAssertEqualInt(testGame.deckCount[nextPlayer], game.deckCount[nextPlayer] - NUMBERCARDS, "next player card count");
 		printf("next player discard count = %d, expected = %d\n", testGame.discardCount[nextPlayer], game.discardCount[nextPlayer] + NUMBERCARDS);
