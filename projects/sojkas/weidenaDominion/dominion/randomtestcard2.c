@@ -209,8 +209,9 @@ int main()
 		memcpy(&testGame, &game, sizeof(struct gameState));
 		//Does player try to discard an easte or not.
 		int gainCoins = rand() % 2;
+		int discardHand = rand() % 2;
 		int currentPlayer = game.whoseTurn;
-		minionEffect(gainCoins, &testGame, currentPlayer, handPos);
+		callMinion(gainCoins, discardHand, &testGame, handPos, currentPlayer);
 		//Estate to discard
 		if(gainCoins == 1)
 		{
