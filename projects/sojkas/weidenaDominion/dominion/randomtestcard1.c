@@ -221,7 +221,7 @@ int main()
 		{
 			printf("Estate Gained\n");
 			printf("current player coin count = %d, expected = %d\n", testGame.coins, game.coins);
-			newAssertEqualInt(testGame.coins, game.coins + INCREASECOINS, "current player coin count");
+			newAssertEqualInt(testGame.coins, game.coins, "current player coin count");
 			printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions);
 			newAssertEqualInt(testGame.numActions, game.numActions, "Number actions");
 			printf("current player hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM);
