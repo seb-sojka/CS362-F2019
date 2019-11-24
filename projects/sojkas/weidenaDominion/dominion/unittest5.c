@@ -259,35 +259,4 @@ int main() {
 	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer]);
 	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer], "discard count");
 
-	printf("TEST 5: Try to gain treasure that is cost 4 more than the trash card\n");
-	
-	printf("Card number %d to trash\n", cardTrash);
-	minePos = rand() % randHandSize;
-	memcpy(newHand, silvers, sizeof(int) * randHandSize);
-	newHand[minePos] = mine;
-
-	randTrash = rand() % randHandSize;
-	while(randTrash == minePos)
-	{
-		randTrash = rand() % randHandSize;
-	}
-	game.whoseTurn = currentPlayer;
-	game.handCount[currentPlayer] = randHandSize;
-	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
-	memcpy(&testGame, &game, sizeof(struct gameState));
-	gainTreasure = testTres4;
-	ret = callMine(randTrash, gainTreasure, &testGame, minePos, currentPlayer);
-	
-	printf("function return = %d, expected = %d\n", ret, 0);
-	newAssertEqualInt(ret, -1, "function return");
-	
-	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
-	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "hand count");
-	printf("supply count of gain card = %d, expected = %d\n", testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure]);
-	newAssertEqualInt(testGame.supplyCount[gainTreasure], game.supplyCount[gainTreasure], "supply count of gained card");
-	printf("number of cards card played = %d, expected = %d\n", testGame.playedCardCount, 0);
-	newAssertEqualInt(testGame.playedCardCount, 0, "number of cards card played");
-	printf("discard count = %d, expected = %d\n", testGame.discardCount[currentPlayer], game.discardCount[currentPlayer]);
-	newAssertEqualInt(testGame.discardCount[currentPlayer], game.discardCount[currentPlayer], "discard count");
-
 }
