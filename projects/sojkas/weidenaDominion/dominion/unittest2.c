@@ -1,6 +1,6 @@
 /*
  * unittest2.c
- * To test the function for the Minion Card, minionEffect.
+ * To test the function for the Minion Card, callMinion.
  */
 
 /*
@@ -70,7 +70,7 @@ int main() {
 	
 	printf("TEST 1: Gain 2 coins\n");
 	
-	minionEffect(1, &testGame, currentPlayer, 0);
+	callMinion(1, 0, &testGame, 0, currentPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - cardDiscard);
 	printf("coin count = %d, expected = %d\n", testGame.coins, game.coins + increaseCoins);
@@ -96,7 +96,7 @@ int main() {
 	}
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	minionEffect(0, &testGame, currentPlayer, 0);
+	callMinion(0, 1, &testGame, 0, currentPlayer);
 	
 	for(i = 0; i < numPlayers; i++)
 	{
@@ -121,7 +121,7 @@ int main() {
 
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	minionEffect(0, &testGame, currentPlayer, 0);
+	callMinion(0, 1, &testGame, 0, currentPlayer);
 	
 	for(i = 0; i < numPlayers; i++)
 	{
@@ -146,7 +146,7 @@ int main() {
 
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	minionEffect(0, &testGame, currentPlayer, 0);
+	callMinion(0, 1, &testGame, 0, currentPlayer);
 	
 	for(i = 0; i < numPlayers; i++)
 	{
@@ -175,7 +175,7 @@ int main() {
 
 	memcpy(&testGame, &game, sizeof(struct gameState));
 
-	minionEffect(0, &testGame, currentPlayer, 0);
+	callMinion(0, 1, &testGame, 0, currentPlayer);
 	
 	for(i = 0; i < numPlayers; i++)
 	{
