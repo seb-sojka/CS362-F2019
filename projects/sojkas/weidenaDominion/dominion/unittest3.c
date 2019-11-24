@@ -1,6 +1,6 @@
 /*
  * unittest2.c
- * To test the function for the ambassador Card, ambassadorEffect.
+ * To test the function for the ambassador Card, callAmbassador.
  */
 
 /*
@@ -91,7 +91,7 @@ int main() {
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
-	ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	callAmbassador(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum);
 	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + returnNum - (numPlayers - 1));
 	
@@ -134,7 +134,7 @@ int main() {
 	returnNum = rand() % (randHandSize - 3) + 3;
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	int ret = ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	int ret = callAmbassador(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
 	if(ret == -1)
 	{
 		printf("Ambassador return error. Return -1\n");
@@ -175,7 +175,7 @@ int main() {
 	returnNum = -1;
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	ret = ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	ret = callAmbassador(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
 	if(ret == -1)
 	{
 		printf("Ambassador return error. Return -1\n");
@@ -212,7 +212,7 @@ int main() {
 	returnNum = rand() % 3;
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	ret = ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	ret = callAmbassador(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
 	if(ret == -1)
 	{
 		printf("Ambassador return error. Return -1\n");
@@ -254,7 +254,7 @@ int main() {
 	
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
-	ambassadorEffect(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
+	callAmbassador(revealPos, returnNum, &testGame, ambassPos, currentPlayer);
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - 1 - returnNum);
 	printf("supply count = %d, expected = %d\n", testGame.supplyCount[cardTrash], game.supplyCount[cardTrash] + returnNum - (numPlayers - 1));
 	

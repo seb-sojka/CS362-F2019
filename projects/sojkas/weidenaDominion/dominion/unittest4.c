@@ -1,6 +1,6 @@
 /*
  * unittest2.c
- * To test the function for the tribute Card, tributeEffect.
+ * To test the function for the tribute Card, callTribute.
  */
 
 /*
@@ -131,7 +131,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -168,7 +168,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -230,7 +230,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -291,7 +291,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -352,7 +352,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -413,7 +413,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -476,7 +476,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -539,7 +539,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -593,7 +593,7 @@ int main() {
 	newHand[triPos] = tribute;
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
-	tributeEffect(&testGame, triPos);
+	callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 	
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 	printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);
@@ -659,7 +659,7 @@ int main() {
 		newHand[triPos] = tribute;
 		memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 		memcpy(&testGame, &game, sizeof(struct gameState));
-		tributeEffect(&testGame, triPos);
+		callTribute(0, 0, &testGame, triPos, currentPlayer, nextPlayer);
 		
 		printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + DRAWCARDS * victRev);
 		printf("coins gained = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * treasuresRev);

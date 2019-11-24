@@ -1,6 +1,6 @@
 /*
  * unittest2.c
- * To test the function for the mine Card, mineEffect.
+ * To test the function for the mine Card, callMine.
  */
 
 /*
@@ -107,7 +107,7 @@ int main() {
 		randTrash = rand() % randHandSize;
 	}
 	printf("Trash Num Card: %d\n", testGame.hand[currentPlayer][randTrash]);
-	int ret = mineEffect(&testGame, minePos, randTrash, gainTreasure);
+	int ret = callMine(randTrash, gainTreasure, &testGame, minePos, currentPlayer);
 	printf("function return = %d, expected = %d\n", ret, 0);
 
 	printf("hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - CARDDISCARD + GAINCARD);
@@ -176,7 +176,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
-	ret = mineEffect(&testGame, minePos, randTrash, cardGain);
+	ret = callMine(randTrash, gainTreasure, &testGame, minePos, currentPlayer);
 
 	printf("function return = %d, expected = %d\n", ret, -1);
 	newAssertEqualInt(ret, -1, "function return");
@@ -213,7 +213,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	
-	ret = mineEffect(&testGame, minePos, randTrash, cardGain);
+	ret = callMine(randTrash, gainTreasure, &testGame, minePos, currentPlayer);
 	
 	printf("function return = %d, expected = %d\n", ret, -1);
 	newAssertEqualInt(ret, -1, "function return");
@@ -245,7 +245,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	gainTreasure = gold;
-	ret = mineEffect(&testGame, minePos, randTrash, gainTreasure);
+	ret = callMine(randTrash, gainTreasure, &testGame, minePos, currentPlayer);
 	
 	printf("function return = %d, expected = %d\n", ret, 0);
 	newAssertEqualInt(ret, -1, "function return");
@@ -276,7 +276,7 @@ int main() {
 	memcpy(game.hand[currentPlayer], newHand, sizeof(int) * randHandSize);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	gainTreasure = testTres4;
-	ret = mineEffect(&testGame, minePos, randTrash, gainTreasure);
+	ret = callMine(randTrash, gainTreasure, &testGame, minePos, currentPlayer);
 	
 	printf("function return = %d, expected = %d\n", ret, 0);
 	newAssertEqualInt(ret, -1, "function return");
