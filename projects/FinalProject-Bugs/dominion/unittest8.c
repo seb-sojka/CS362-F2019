@@ -46,10 +46,8 @@ int valueInArray(int val, int array[])
 	return 0;
 }
 
-void setUpRandomGame(struct gameState* game, int* estateInHand, int* handPos)
+void setUpRandomGame(struct gameState* game)
 {
-	*handPos = -1;
-	*estateInHand = 0;
 	int seed = rand();
 	int k[10];
 	//Limit cards in play to the cards avialbe to choose from and do not duplicate them.
@@ -105,14 +103,6 @@ void setUpRandomGame(struct gameState* game, int* estateInHand, int* handPos)
 		for(j = 0; j < game->handCount[i]; j++)
 		{
 			game->hand[i][j] = allCards[rand()%17];
-			if(i == currentPlayer && game->hand[i][j] == baron && *handPos < 0)
-			{
-				*handPos = j;
-			}
-			if(i == currentPlayer && game->hand[i][j] == estate)
-			{
-				*estateInHand = 1;
-			}
 		}
 		for(j = 0; j < game->deckCount[i]; j++)
 		{
@@ -122,12 +112,6 @@ void setUpRandomGame(struct gameState* game, int* estateInHand, int* handPos)
 		{
 			game->discard[i][j] = allCards[rand()%17];
 		}
-	}
-	
-	if(*handPos == -1)
-	{
-		*handPos = rand() % game->handCount[currentPlayer];
-		game->hand[currentPlayer][*handPos] = baron;
 	}
 	
 	//Set supply count from its startig supply to 0.
@@ -152,16 +136,12 @@ void setUpRandomGame(struct gameState* game, int* estateInHand, int* handPos)
 int main() 
 {
 	printf("Testing Card is %s\n", TESTCARD);
-	int estateInHand = 0;
 	srand(time(NULL));
-	int i;
 	struct gameState game, testGame;
-	printf("Test %d\n", i);
+	printf("Test 1: Gain Coins from Baron card\n");
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
-	int handPos = 0;
-	setUpRandomGame(&game, &estateInHand, &handPos);
-	printf("Test 1: Gain Coins from Baron card\n");
+	setUpRandomGame(&game);
 	game.hand[game.whoseTurn][0] = baron;
 	game.hand[game.whoseTurn][1] = estate;
 	memcpy(&testGame, &game, sizeof(struct gameState));
@@ -169,4 +149,35 @@ int main()
 	updateCoins(game.whoseTurn, &game, 0);
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 4);
 	newAssertEqualInt(testGame.coins, game.coins + 4, "played Card Count");
+	printf("Test 2: Gain Coins from minion  card\n");
+	memset(&game, 0, sizeof(struct gameState));
+	memset(&testGame, 0, sizeof(struct gameState));
+	setUpRandomGame(&game);
+	game.hand[game.whoseTurn][0] = minion;
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	playCard(0, 1, 0, 0, &testGame);
+	updateCoins(game.whoseTurn, &game, 0);
+	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
+	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
+	printf("Test 3: Gain Coins from steward  card\n");
+	memset(&game, 0, sizeof(struct gameState));
+	memset(&testGame, 0, sizeof(struct gameState));
+	setUpRandomGame(&game);
+	game.hand[game.whoseTurn][0] = steward;
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	playCard(0, 2, 0, 0, &testGame);
+	updateCoins(game.whoseTurn, &game, 0);
+	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
+	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
+	printf("Test 4: Gain Coins from embargo card\n");
+	memset(&game, 0, sizeof(struct gameState));
+	memset(&testGame, 0, sizeof(struct gameState));
+	setUpRandomGame(&game);
+	game.hand[game.whoseTurn][0] = embargo;
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	playCard(0, copper, 0, 0, &testGame);
+	updateCoins(game.whoseTurn, &game, 0);
+	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
+	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
+	
 }
