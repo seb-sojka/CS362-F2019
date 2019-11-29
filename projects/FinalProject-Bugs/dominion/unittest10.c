@@ -91,13 +91,12 @@ int main()
 		nextPlayer = 0;
 	}
 
-	printf("Test 1: Try to return 1 duchy to supply with only 1 in hands and a duchy card to return at card hand index 2\n");
+	printf("Test 1: Try to return 1 duchy to supply with only 1 in hands that is revealed\n");
 	setUpRandomGame(&game);
 	game.handCount[game.whoseTurn] = 3;
 	game.hand[game.whoseTurn][0] = ambassador;
 	game.hand[game.whoseTurn][1] = duchy;
 	game.hand[game.whoseTurn][2] = estate;
-	printf("dcuhy Number: %d\n", duchy);
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	int returnVal = cardEffect(ambassador, 1, 1, 0, &testGame, 0, 0);
 	if(returnVal != -1)
@@ -110,5 +109,27 @@ int main()
 	}
 	
 	printf("cardEffect functin should return -1 with error.\n");
-	newAssertEqualInt(returnVal, -1, "return value from cardEffect");
+	newAssertEqualInt(returnVal, -1, "return value from cardEffect when playing Ambassador");
+	
+	printf("Test 2: Try to return 2 duchy to supply with only 2 in hand\n");
+	setUpRandomGame(&game);
+	game.handCount[game.whoseTurn] = 5;
+	game.hand[game.whoseTurn][0] = ambassador;
+	game.hand[game.whoseTurn][1] = duchy;
+	game.hand[game.whoseTurn][2] = estate;
+	game.hand[game.whoseTurn][3] = duchy;
+	game.hand[game.whoseTurn][4] = duchy;
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	returnVal = cardEffect(ambassador, 1, 2, 0, &testGame, 0, 0);
+	if(returnVal != -1)
+	{
+		printf("cardEffect function return 0 without error.\n");
+	}
+	else
+	{
+		printf("cardEffect function return -1 with error.\n");
+	}
+	
+	printf("cardEffect functin should return 0 without error.\n");
+	newAssertEqualInt(returnVal, 0, "return value from cardEffect when playing Ambassador");
 }

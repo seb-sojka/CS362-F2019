@@ -253,4 +253,6 @@ int main()
 	newAssertEqualInt(testGame.numBuys, game.numBuys, "buy count");
 	printf("current player hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer]);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer], "current player hand count");
+	printf("played card count = %d, expected = %d\n", testGame.playedCardCount, game.playedCardCount);
+	newAssertEqualInt(testGame.playedCardCount, game.playedCardCount, "played card count");
 }
