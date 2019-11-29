@@ -1,6 +1,6 @@
 /*
  * unittest8.c
- * To test the function cardEffect and how bonus coins are treated from played cards 
+ * To test the function Tribute and how bonus coins are treated from played cards 
  */
 
 /*
@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TESTCARD "cardEffect"
+#define TESTCARD "Tribute"
 
 #define TESTLIMIT 10000
 #define ACTIONINCREASE 1

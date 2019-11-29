@@ -148,7 +148,6 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 		*handPos = rand() % game->handCount[currentPlayer];
 		game->hand[currentPlayer][*handPos] = tribute;
 	}
-	int card = allCards[rand()%17];
 	int nextPlayer = game->whoseTurn + 1;
 	if (game->numPlayers <= nextPlayer)
 	{
