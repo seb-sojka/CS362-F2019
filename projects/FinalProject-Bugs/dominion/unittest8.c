@@ -114,6 +114,7 @@ void setUpRandomGame(struct gameState* game)
 		}
 	}
 	
+	state->coins = rand() % 500;
 	//Set supply count from its startig supply to 0.
 	for (i = 0; i < 27; i++)
 	{
