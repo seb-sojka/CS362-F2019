@@ -28,4 +28,28 @@ player: player.c interface.o
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unit8 unit9 unit10 unit11
+
+unitTest8: unittest8.c dominion.o rngs.o
+	gcc  -o unit8 -g  unittest8.c dominion.o rngs.o $(CFLAGS)
+	./unit8 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
+
+unitTest9: unittest9.c dominion.o rngs.o
+	gcc  -o unit9 -g  unittest9.c dominion.o rngs.o $(CFLAGS)
+	./unit9 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
+
+unitTest10: unittest10.c dominion.o rngs.o
+	gcc  -o unit10 -g  unittest10.c dominion.o rngs.o $(CFLAGS)
+	./unit10 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
+
+unitTest11: unittest11.c dominion.o rngs.o
+	gcc  -o unit11 -g  unittest11.c dominion.o rngs.o $(CFLAGS)
+	./unit11 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
+
+unittestresults: clean all unitTest8 unitTest9 unitTest10 unitTest11
+	cat dominion.c.gcov >> unittestresult.out
+
