@@ -130,7 +130,7 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 		}
 		for(j = 0; j < game->deckCount[i]; j++)
 		{
-			game->deck[i][j] = allCards[rand()%17];
+			game->deck[i][j] = -1;
 		}
 		for(j = 0; j < game->discardCount[i]; j++)
 		{
