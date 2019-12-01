@@ -54,10 +54,13 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		}
 		else
 		{
+			printf("Supply pile is %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
+			printf("Supply pile is %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
+			printf("Supply pile is %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 		}
 			
