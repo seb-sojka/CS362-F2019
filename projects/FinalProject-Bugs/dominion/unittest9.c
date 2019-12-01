@@ -52,6 +52,17 @@ int valueInArray(int val, int array[])
 	return 0;
 }
 
+void setRevealCards(struct gameState* game)
+{
+	int nextPlayer = game->whoseTurn + 1;
+	if (game->numPlayers <= nextPlayer)
+	{
+		nextPlayer = 0;
+	}
+	game->deck[nextPlayer][game->deckCount[nextPlayer]-1] = -1;
+	game->deck[nextPlayer][game->deckCount[nextPlayer]-2] = -1;
+	
+}
 
 void setUpRandomGame(struct gameState* game, int* handPos)
 {
