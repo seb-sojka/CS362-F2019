@@ -25,9 +25,8 @@ void assertTrue(int test, int value) {
 int testIsGameOver(int expectedVal, struct gameState *state) {
 
 
-	int val = isGameOver(state);
-
 	//return 0
+	int val;
 	if (expectedVal == 1) {
 
 		int choice = rand() % 4;
@@ -54,16 +53,14 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		}
 		else
 		{
-			printf("Supply pile is %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
-			printf("Supply pile is %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
-			printf("Supply pile is %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 		}
-			
+		
+		val = isGameOver(state);
 
 		if(state->supplyCount[sea_hag] == 0 && state->supplyCount[treasure_map] == 0)
 		{
@@ -86,14 +83,15 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		assertTrue(expectedVal, val);
 		printf("TEST: isGameOver returns 1.\n");
 
-		}
-
-		if (expectedVal == 0) {
-			printf("CASE: Less then 3 supply piles equal 0 \n");
-			assertTrue(expectedVal, val);
-			printf("TEST: isGameOver returns 0.\n");
-
 	}
+
+	else {
+		val = isGameOver(state);
+		printf("CASE: Less then 3 supply piles equal 0 \n");
+		assertTrue(expectedVal, val);
+		printf("TEST: isGameOver returns 0.\n");
+	}
+
 
 
 	return val;
