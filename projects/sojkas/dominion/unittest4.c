@@ -30,6 +30,38 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 	//return 0
 	if (expectedVal == 0) {
 
+		int choice = rand() % 4;
+		int supplyPile = rand() % 25;
+		if (choice == 0)
+		{
+			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[sea_hag] == 0;
+			state->supplyCount[treasure_map] == 0;
+		}
+		else if (choice == 1)
+		{
+			state->supplyCount[supplyPile] == 0;
+			supplyPile = rand() % 25;
+			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[sea_hag] == 0;
+		}
+		else if (choice == 2)
+		{
+			state->supplyCount[supplyPile] == 0;
+			supplyPile = rand() % 25;
+			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[treasure_map] == 0;
+		}
+		else
+		{
+			state->supplyCount[supplyPile] == 0;
+			supplyPile = rand() % 25;
+			state->supplyCount[supplyPile] == 0;
+			supplyPile = rand() % 25;
+			state->supplyCount[supplyPile] == 0;
+		}
+			
+
 		if(state->supplyCount[sea_hag] == 0 && state->supplyCount[treasure_map] == 0)
 		{
 			printf("CASE: Three supply piles equal 0, one is sea_hag and one is treasure_map \n");
@@ -79,41 +111,6 @@ int main (int argc, char** argv)
 		int expectedVal = rand() % 2;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
-
-		if (expectedVal == 0)
-		{
-			int choice = rand() % 4;
-			int supplyPile = rand() % 25;
-			if (choice == 0)
-			{
-				G.supplyCount[supplyPile] == 0;
-				G.supplyCount[sea_hag] == 0;
-				G.supplyCount[treasure_map] == 0;
-			}
-			else if (choice == 1)
-			{
-				G.supplyCount[supplyPile] == 0;
-				supplyPile = rand() % 25;
-				G.supplyCount[supplyPile] == 0;
-				G.supplyCount[sea_hag] == 0;
-			}
-			else if (choice == 2)
-			{
-				G.supplyCount[supplyPile] == 0;
-				supplyPile = rand() % 25;
-				G.supplyCount[supplyPile] == 0;
-				G.supplyCount[treasure_map] == 0;
-			}
-			else
-			{
-				G.supplyCount[supplyPile] == 0;
-				supplyPile = rand() % 25;
-				G.supplyCount[supplyPile] == 0;
-				supplyPile = rand() % 25;
-				G.supplyCount[supplyPile] == 0;
-			}
-			
-		}
 
 		testIsGameOver(expectedVal, &G);
 	}
