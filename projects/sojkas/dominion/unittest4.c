@@ -22,105 +22,100 @@ void assertTrue(int test, int value) {
 	}
 }
 
-/* HELPER FUNCTIONS FOR testBaron */
+int testIsGameOver(int expectedVal, struct gameState *state) {
 
-//go through the discard to check number of estates
-int numDiscardEstates(struct gameState *state, int currentPlayer) {
 
-	int discardEstates = 0;
-	for (int i = 0; i < state->discardCount[currentPlayer]; i++) {
-		if (state->discard[currentPlayer][i] == estate) {
-			discardEstates++;
+	int val = isGameOver(state);
+
+	//return 0
+	if (expectedVal == 0) {
+
+		if(state->supplyCount[sea_hag] == 0 && state->supplyCount[treasure_map] == 0)
+		{
+			printf("CASE: Three supply piles equal 0, one is sea_hag and one is treasure_map \n");
 		}
-	}
-	return discardEstates;
-}
 
-//go through the hand to check number of estatess
-int getNumEstates(struct gameState *state, int currentPlayer) {
-
-	int numEstates = 0;
-	for (int i = 0; i < numHandCards(state); i++) {
-		if (state->hand[currentPlayer][i] == estate) {
-			numEstates++;
+		else if(state->supplyCount[sea_hag] == 0)
+		{
+			printf("CASE: Three supply piles equal 0, one is sea_hag \n");
 		}
-	}
-	return numEstates;
-}
 
-int testBaron(int choice1, struct gameState *state, int currentPlayer) {
+		else if (state->supplyCount[treasure_map] == 0){
+			printf("CASE: Three supply piles equal 0, one is treasure_map \n");
+		}
 
-	int numEstates = getNumEstates(state, currentPlayer);
-	int discardEstates = numDiscardEstates(state, currentPlayer);
-	int supplyEstates = supplyCount(1, state);
-	int money = state->coins;
+		else{
+			printf("CASE: Three supply piles equal 0, neither is sea_hag nor treasure_map \n");
+		}
 
-	int val = baronEffect(choice1, state, currentPlayer);
+		assertTrue(expectedVal, val);
+		printf("TEST: isGameOver returns 0.\n");
 
-	//Discard estate
-	if (choice1 == 1 && numEstates > 0) {
-		printf("CASE: Discard Estate\n");
-		
-		assertTrue(numEstates - 1, getNumEstates(state, currentPlayer));
-		printf("TEST: -1 estate from hand.\n");
-		
-		assertTrue(money + 4, state->coins);
-		printf("TEST: Coins + 4.\n");
-		
-		assertTrue(discardEstates + 1, numDiscardEstates(state, currentPlayer));
-		printf("TEST: +1 estate to discard pile.\n");
+		}
+
+		if (expectedVal == 1) {
+			printf("CASE: Less then 3 supply piles equal 0 \n");
+			assertTrue(expectedVal, val);
+			printf("TEST: isGameOver returns 1.\n");
+
 	}
 
-	//Gain estate
-	else {
-		printf("CASE: Gaining Estate\n");
-		
-		assertTrue(numEstates, getNumEstates(state, currentPlayer));
-		printf("TEST: 1 more estate in hand.\n");
-		
-		assertTrue(money, state->coins);
-		printf("TEST: Coins unchanged.\n");
-		
-		assertTrue(supplyEstates - 1, supplyCount(1, state));
-		printf("TEST: 1 fewer estate in supply pile.\n");
-	}
 
 	return val;
 }
 
 int main (int argc, char** argv)	
 {
-    struct gameState G, tmp;
+    struct gameState G;
 	int k[10] = { adventurer, gardens, embargo, village, minion, mine, cutpurse,
 		sea_hag, tribute, smithy };
 	srand(time(0));
 
-	printf("Tests for BARON\n");
-
-	//Random test of basic card functionality	
-	for (int i = 0; i < 30; i++) {
-		int seed = rand() % 1000;
-		int choice = rand() % 2;
-		printf("\nStarting new round of tests.\n");
-		initializeGame(2, k, seed, &G);
-		memcpy(&tmp, &G, sizeof(struct gameState));
-		testBaron(choice, &G, 0);
-		assertTrue(tmp.handCount[1], G.handCount[1]);
-		printf("Test: Other players hand count did not change.");
-	}
+	printf("Tests for isGameOver\n");
 
 	//hard coded tests
 	for(int i = 0; i < 10; i++){
 		int seed = rand() % 1000;
-		int choice = rand() % 2;
+		int expectedVal = rand() % 2;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
 
-		for(int j = 0; j < supplyCount(estate, &G) * 8; j++){
-			gainCard(1, &G, 0, 0);
+		if (expectedVal == 0)
+		{
+			int choice = rand() % 4;
+			int supplyPile = rand() % 25;
+			if (choice == 0)
+			{
+				G.supplyCount[supplyPile] == 0;
+				G.supplyCount[sea_hag] == 0;
+				G.supplyCount[treasure_map] == 0;
+			}
+			else if (choice == 1)
+			{
+				G.supplyCount[supplyPile] == 0;
+				supplyPile = rand() % 25;
+				G.supplyCount[supplyPile] == 0;
+				G.supplyCount[sea_hag] == 0;
+			}
+			else if (choice == 2)
+			{
+				G.supplyCount[supplyPile] == 0;
+				supplyPile = rand() % 25;
+				G.supplyCount[supplyPile] == 0;
+				G.supplyCount[treasure_map] == 0;
+			}
+			else
+			{
+				G.supplyCount[supplyPile] == 0;
+				supplyPile = rand() % 25;
+				G.supplyCount[supplyPile] == 0;
+				supplyPile = rand() % 25;
+				G.supplyCount[supplyPile] == 0;
+			}
+			
 		}
 
-		testBaron(choice, &G, 0);
+		testIsGameOver(expectedVal, &G);
 	}
 
 	return 0;
