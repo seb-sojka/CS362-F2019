@@ -34,31 +34,31 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		int supplyPile = rand() % 25;
 		if (choice == 0)
 		{
-			state->supplyCount[supplyPile] == 0;
-			state->supplyCount[sea_hag] == 0;
-			state->supplyCount[treasure_map] == 0;
+			state->supplyCount[supplyPile] = 0;
+			state->supplyCount[sea_hag] = 0;
+			state->supplyCount[treasure_map] = 0;
 		}
 		else if (choice == 1)
 		{
-			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
-			state->supplyCount[supplyPile] == 0;
-			state->supplyCount[sea_hag] == 0;
+			state->supplyCount[supplyPile] = 0;
+			state->supplyCount[sea_hag] = 0;
 		}
 		else if (choice == 2)
 		{
-			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
-			state->supplyCount[supplyPile] == 0;
-			state->supplyCount[treasure_map] == 0;
+			state->supplyCount[supplyPile] = 0;
+			state->supplyCount[treasure_map] = 0;
 		}
 		else
 		{
-			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
-			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
-			state->supplyCount[supplyPile] == 0;
+			state->supplyCount[supplyPile] = 0;
 		}
 			
 
