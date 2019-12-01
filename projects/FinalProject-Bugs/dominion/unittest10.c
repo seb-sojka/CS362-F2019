@@ -84,8 +84,6 @@ int main()
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
 	setUpRandomGame(&game);
-	int currentPlayer = game.whoseTurn;
-	int nextPlayer = game.whoseTurn + 1;
 	if(nextPlayer >= game.numPlayers)
 	{
 		nextPlayer = 0;
