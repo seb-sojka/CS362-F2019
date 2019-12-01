@@ -106,7 +106,6 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 int main (int argc, char** argv)	
 {
     struct gameState G;
-	int i;
 	int k[10] = { adventurer, gardens, embargo, village, minion, mine, cutpurse,
 		sea_hag, tribute, smithy };
 	srand(time(0));
@@ -120,7 +119,7 @@ int main (int argc, char** argv)
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
 
-		for (i=0; i<treasure_map+1; i++)
+		for (int j=0; j<treasure_map+1; j++)
 		{
 			G.supplyCount[i] = 10;
 		}
