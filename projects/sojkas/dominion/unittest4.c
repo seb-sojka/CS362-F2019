@@ -30,7 +30,7 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 	if (expectedVal == 1) {
 
 		int choice = rand() % 4;
-		int supplyPile = rand() % 25;
+		int supplyPile = rand() % 5;
 		printf("Supply pile is: %d\n", supplyPile);
 		if (choice == 0)
 		{
@@ -41,26 +41,23 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		else if (choice == 1)
 		{
 			state->supplyCount[supplyPile] = 0;
-			supplyPile = rand() % 25;
-			printf("Supply pile is: %d\n", supplyPile);
+			supplyPile = (rand() % 5)+5;
 			state->supplyCount[supplyPile] = 0;
 			state->supplyCount[sea_hag] = 0;
 		}
 		else if (choice == 2)
 		{
 			state->supplyCount[supplyPile] = 0;
-			supplyPile = rand() % 25;
-			printf("Supply pile is: %d\n", supplyPile);
+			supplyPile = (rand() % 5)+5;
 			state->supplyCount[supplyPile] = 0;
 			state->supplyCount[treasure_map] = 0;
 		}
 		else
 		{
 			state->supplyCount[supplyPile] = 0;
-			supplyPile = rand() % 25;
-			printf("Supply pile is: %d\n", supplyPile);
+			supplyPile = (rand() % 5)+5;
 			state->supplyCount[supplyPile] = 0;
-			supplyPile = rand() % 25;
+			supplyPile = (rand() % 5)+10;
 			printf("Supply pile is: %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 		}
@@ -117,6 +114,11 @@ int main (int argc, char** argv)
 		int expectedVal = rand() % 2;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
+
+		for (int i=0; i<treasure_map+1; i++)
+		{
+			G.supplyCount[i] = 10;
+		}
 
 		testIsGameOver(expectedVal, &G);
 	}
