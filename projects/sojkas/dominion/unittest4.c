@@ -31,6 +31,7 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 
 		int choice = rand() % 4;
 		int supplyPile = rand() % 25;
+		printf("Supply pile is: %d\n", supplyPile);
 		if (choice == 0)
 		{
 			state->supplyCount[supplyPile] = 0;
@@ -41,6 +42,7 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		{
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
+			printf("Supply pile is: %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			state->supplyCount[sea_hag] = 0;
 		}
@@ -48,6 +50,7 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		{
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
+			printf("Supply pile is: %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			state->supplyCount[treasure_map] = 0;
 		}
@@ -55,8 +58,10 @@ int testIsGameOver(int expectedVal, struct gameState *state) {
 		{
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
+			printf("Supply pile is: %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 			supplyPile = rand() % 25;
+			printf("Supply pile is: %d\n", supplyPile);
 			state->supplyCount[supplyPile] = 0;
 		}
 		
