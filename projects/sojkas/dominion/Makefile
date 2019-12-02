@@ -15,7 +15,7 @@ unitTest4: unittest4.c dominion.o rngs.o
 	./unit4 >> unittestresult.out
 	gcov dominion.c -b -f>> unittestresult.out
 
-unitTest4: unittest5.c dominion.o rngs.o
+unitTest5: unittest5.c dominion.o rngs.o
 	gcc  -o unit5 -g  unittest5.c dominion.o rngs.o $(CFLAGS)
 	./unit5 >> unittestresult.out
 	gcov dominion.c -b -f>> unittestresult.out
