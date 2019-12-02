@@ -748,7 +748,7 @@ static int mineEffect(struct gameState *state, int handPos, int trashPos, int ca
 //2 coins for a treasure card, or draw 2 cards for a victory card.
 //Inputs: pointer to game state, hand postion of card to be played
 //Output: -1 if error, 0 if no error
-static int tributeEffect(struct gameState *state, int handPos)
+int tributeEffect(struct gameState *state, int handPos)
 {
 	int currentPlayer = whoseTurn(state);
 	int nextPlayer = currentPlayer;
@@ -807,6 +807,7 @@ static int tributeEffect(struct gameState *state, int handPos)
 
 	for (int i = 0; i <= 2; i++)
 	{
+        printf("Tribute card revealed is: %d\n", tributeRevealedCards[i]);
 		if (tributeRevealedCards[i] > copper && tributeRevealedCards[i] < gold)//Treasure cards
 		{
 			state->coins += 2;

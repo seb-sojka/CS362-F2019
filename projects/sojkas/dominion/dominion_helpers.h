@@ -2,7 +2,6 @@
 #define _DOMINION_HELPERS_H
 
 #include "dominion.h"
-
 int drawCard(int player, struct gameState *state);
 int updateCoins(int player, struct gameState *state, int bonus);
 int discardCard(int handPos, int currentPlayer, struct gameState *state,
