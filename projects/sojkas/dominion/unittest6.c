@@ -39,8 +39,8 @@ int testFeast(int expectedCase, struct gameState *state) {
 
         // add coins to the hand (this is how updateCoins works)
         state->hand[0][0] = silver;
-        state->hand[0][1] = silver;
-        state->hand[0][2] = gold;
+        state->hand[0][1] = gold;
+        state->hand[0][2] = silver;
         state->hand[0][3] = gold;
         state->handCount[0] = 4;
         updateCoins(0, state, 0);
@@ -63,7 +63,6 @@ int testFeast(int expectedCase, struct gameState *state) {
         else if (expectedCase == 1)        
 		{
             val = cardEffect(feast, province, 0, 0, state, 0, 0);
-            printf("Current value of coins is %d\n", state->coins);
             printf("CASE: Value of chosen card is greater than 5\n");
             assertTrue(expectedVal, val);
 		    printf("TEST: cardEffect returns -1.\n");
@@ -76,7 +75,6 @@ int testFeast(int expectedCase, struct gameState *state) {
         else if (expectedCase == 2)        
 		{
             val = cardEffect(feast, duchy, 0, 0, state, 0, 0);
-            printf("Current value of coins is %d\n", state->coins);
             printf("CASE: Value of chosen card is equal to 5\n");
             assertTrue(expectedVal, val);
 		    printf("TEST: cardEffect returns 0.\n");
@@ -86,7 +84,7 @@ int testFeast(int expectedCase, struct gameState *state) {
         }
 
         // player does not have any coins currently in hand
-        else
+        else if (expectedCase == 3)
         {
             for (int i =0; i<4; i++)
             {
@@ -94,9 +92,24 @@ int testFeast(int expectedCase, struct gameState *state) {
             }
             updateCoins(0, state, 0);
             expectedCoins = state->coins;
-            printf("CASE: Player does not currently have any coins\n");
+            printf("CASE: Player does not currently have any coins in their hand and value of card is 5\n");
+            val = cardEffect(feast, duchy, 0, 0, state, 0, 0);
             assertTrue(expectedVal, val);
-		    printf("TEST: cardEffect returns -1.\n");
+		    printf("TEST: cardEffect returns 0.\n");
+            assertTrue(expectedCoins, state->coins);
+		    printf("TEST: player's coins have not changed.\n");
+        }
+
+        // value of cards in hand is equal to 5
+        else
+        {
+            state->handCount[0] = 2;
+            updateCoins(0, state, 0);
+            expectedCoins = state->coins;
+            printf("CASE: Player currently has 5 coins in their hand and value of card is 5\n");
+            val = cardEffect(feast, duchy, 0, 0, state, 0, 0);
+            assertTrue(expectedVal, val);
+		    printf("TEST: cardEffect returns 0.\n");
             assertTrue(expectedCoins, state->coins);
 		    printf("TEST: player's coins have not changed.\n");
         }
@@ -117,7 +130,7 @@ int main (int argc, char** argv)
 	//hard coded tests
 	for(int i = 0; i < 10; i++){
 		int seed = rand() % 1000;
-		int expectedCase = rand() % 4;
+		int expectedCase = rand() % 5;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
 
