@@ -807,7 +807,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             return -1;
         }
 
-        if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
+        if ( (getCost(state->hand[currentPlayer][choice1]) + 3) < getCost(choice2) )
         {
             return -1;
         }
@@ -815,7 +815,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         gainCard(choice2, state, 2, currentPlayer);
 
         //discard card from hand
-        discardCard(handPos, currentPlayer, state, 0);
+        discardCard(handPos, currentPlayer, state, 1);
 
         //discard trashed card
         for (i = 0; i < state->handCount[currentPlayer]; i++)
@@ -832,7 +832,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     case remodel:
         j = state->hand[currentPlayer][choice1];  //store card we will trash
 
-        if ( (getCost(state->hand[currentPlayer][choice1]) + 2) > getCost(choice2) )
+        if ( (getCost(state->hand[currentPlayer][choice1]) + 2) < getCost(choice2) )
         {
             return -1;
         }
