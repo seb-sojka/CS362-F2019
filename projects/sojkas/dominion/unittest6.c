@@ -24,9 +24,9 @@ void assertTrue(int test, int value) {
 
 
 
-int testScoreFor(int expectedCase, struct gameState *state) {
+int testFeast(int expectedCase, struct gameState *state) {
 
-        int val, i, expectedCoins;
+        int val, expectedCoins;
         int expectedVal = 0;
 
         // make sure there are estates (worth 2),duchy's (worth 5) and providences (worth 8) to choose from
