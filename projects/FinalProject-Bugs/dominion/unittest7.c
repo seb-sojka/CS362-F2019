@@ -35,15 +35,15 @@ int testTribute(int expectedCase, struct gameState *state) {
         // hand with two revealed action cards
         if (expectedCase == 0)        
 		{
-            state->deck[0][0] = feast;
-            state->deck[0][1] = mine;
-            state->deck[0][2] = tribute;
-            state->deck[0][3] = baron;
-            state->deck[0][4] = minion;
-            state->deckCount[0] = 5;
+            state->deck[1][0] = feast;
+            state->deck[1][1] = mine;
+            state->deck[1][2] = tribute;
+            state->deck[1][3] = baron;
+            state->deck[1][4] = minion;
+            state->deckCount[1] = 5;
             state->numActions = 1;
             expectedActions = state->numActions + 4;
-            val = tributeEffect(state, 0);
+            val = cardEffect(tribute, 0, 0, 0, state, 0, 0);
             printf("CASE: Two action cards are revealed\n");
             printf("Number of actions are %d\n", state->numActions);
             assertTrue(expectedActions, state->numActions);
@@ -55,15 +55,15 @@ int testTribute(int expectedCase, struct gameState *state) {
         // one action card is revelaed
         else if (expectedCase == 1)        
 		{
-            state->deck[0][0] = estate;
-            state->deck[0][1] = estate;
-            state->deck[0][2] = estate;
-            state->deck[0][3] = estate;
-            state->deck[0][4] = minion;
-            state->deckCount[0] = 5;
+            state->deck[1][0] = estate;
+            state->deck[1][1] = estate;
+            state->deck[1][2] = estate;
+            state->deck[1][3] = estate;
+            state->deck[1][4] = minion;
+            state->deckCount[1] = 5;
             state->numActions = 1;
             expectedActions = state->numActions + 2;
-            val = tributeEffect(state, 0);
+            val = cardEffect(tribute, 0, 0, 0, state, 0, 0);
             printf("CASE: One action card is revealed\n");
             printf("Number of actions are %d\n", state->numActions);
             assertTrue(expectedActions, state->numActions);
@@ -74,15 +74,15 @@ int testTribute(int expectedCase, struct gameState *state) {
         // no action card is revealed
         else
         {
-            state->deck[0][0] = duchy;
-            state->deck[0][1] = silver;
-            state->deck[0][2] = duchy;
-            state->deck[0][3] = province;
-            state->deck[0][4] = estate;
-            state->deckCount[0] = 5;
+            state->deck[1][0] = duchy;
+            state->deck[1][1] = silver;
+            state->deck[1][2] = duchy;
+            state->deck[1][3] = province;
+            state->deck[1][4] = estate;
+            state->deckCount[1] = 5;
             state->numActions = 1;
             expectedActions = state->numActions;
-            val = tributeEffect(state, 0);
+            val = cardEffect(tribute, 0, 0, 0, state, 0, 0);
             printf("CASE: No action cards are revealed\n");
             printf("Number of actions are %d\n", state->numActions);
             assertTrue(expectedActions, state->numActions);
@@ -100,7 +100,7 @@ int main (int argc, char** argv)
 		sea_hag, tribute, smithy };
 	srand(time(0));
 
-	printf("Tests for scoreFor\n");
+	printf("Tests for tribute\n");
 
 	//hard coded tests
 	for(int i = 0; i < 10; i++){
