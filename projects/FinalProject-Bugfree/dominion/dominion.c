@@ -1071,8 +1071,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             state->playedCardCount++;
             tributeRevealedCards[1] = -1;
         }
+	printf("tributeRevealedCards[0]: %d\n",  tributeRevealedCards[0]);
+	printf("tributeRevealedCards[1]: %d\n",  tributeRevealedCards[1]);
 
-        for (i = 0; i <= 2; i ++) {
+        for (i = 0; i < 2; i ++) {
             if(tributeRevealedCards[i] == -1)
 			{
 				//Do nothing.
