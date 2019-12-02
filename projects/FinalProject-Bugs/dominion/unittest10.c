@@ -84,10 +84,6 @@ int main()
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
 	setUpRandomGame(&game);
-	if(nextPlayer >= game.numPlayers)
-	{
-		nextPlayer = 0;
-	}
 
 	printf("Test 1: Try to return 1 duchy to supply with only 1 in hands that is revealed\n");
 	setUpRandomGame(&game);
