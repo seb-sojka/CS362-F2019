@@ -132,7 +132,7 @@ int main (int argc, char** argv)
 	//hard coded tests
 	for(int i = 0; i < 10; i++){
 		int seed = rand() % 1000;
-		int expectedCase = rand() % 2;
+		int expectedCase = rand() % 3;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
 
