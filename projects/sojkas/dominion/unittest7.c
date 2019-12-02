@@ -45,6 +45,7 @@ int testTribute(int expectedCase, struct gameState *state) {
             expectedActions = state->numActions + 4;
             val = tributeEffect(state, 0);
             printf("CASE: Two action cards are revealed\n");
+            printf("Number of actions are %d\n", state->numActions);
             assertTrue(expectedActions, state->numActions);
 		    printf("TEST: expected number of actions are %d\n", expectedActions);
 
@@ -64,6 +65,7 @@ int testTribute(int expectedCase, struct gameState *state) {
             expectedActions = state->numActions + 2;
             val = tributeEffect(state, 0);
             printf("CASE: One action card is revealed\n");
+            printf("Number of actions are %d\n", state->numActions);
             assertTrue(expectedActions, state->numActions);
 		    printf("TEST: expected number of actions are %d\n", expectedActions);
 
@@ -74,7 +76,7 @@ int testTribute(int expectedCase, struct gameState *state) {
         {
             state->deck[0][0] = duchy;
             state->deck[0][1] = silver;
-            state->deck[0][2] = gold;
+            state->deck[0][2] = duchy;
             state->deck[0][3] = province;
             state->deck[0][4] = estate;
             state->deckCount[0] = 5;
@@ -82,8 +84,9 @@ int testTribute(int expectedCase, struct gameState *state) {
             expectedActions = state->numActions;
             val = tributeEffect(state, 0);
             printf("CASE: No action cards are revealed\n");
+            printf("Number of actions are %d\n", state->numActions);
             assertTrue(expectedActions, state->numActions);
-		    printf("TEST: expected number of actions are %d\n", expectedActions);
+		    printf("TEST: expected number of actions is %d\n", expectedActions);
         }
         
 
@@ -102,7 +105,7 @@ int main (int argc, char** argv)
 	//hard coded tests
 	for(int i = 0; i < 10; i++){
 		int seed = rand() % 1000;
-		int expectedCase = rand() % 5;
+		int expectedCase = rand() % 3;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
 
