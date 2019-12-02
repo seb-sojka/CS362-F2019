@@ -190,10 +190,6 @@ int main()
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	int retValue = cardEffect(tribute, 0, 0, 0, &testGame, 0, 0);
 	printf("retValue: %d\n", retValue);
-	printf("next player deck count = %d, expected = %d\n", testGame.deckCount[nextPlayer], game.deckCount[nextPlayer] - NUMBERCARDS);
-	newAssertEqualInt(testGame.deckCount[nextPlayer], game.deckCount[nextPlayer] - NUMBERCARDS, "next player deck count");
-	printf("next player discard count = %d, expected = %d\n", testGame.discardCount[nextPlayer], game.discardCount[nextPlayer] + NUMBERCARDS);
-	newAssertEqualInt(testGame.discardCount[nextPlayer], game.discardCount[nextPlayer] + NUMBERCARDS, "next player discard count");
 	printf("current player coin count = %d, expected = %d\n", testGame.coins, game.coins + INCREASECOINS * numTreasure);
 	newAssertEqualInt(testGame.coins, game.coins + INCREASECOINS * numTreasure, "current player coin count");
 	printf("Number actions = %d, expected = %d\n", testGame.numActions, game.numActions + ACTIONINCREASE * numAction);
