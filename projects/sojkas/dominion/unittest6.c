@@ -63,6 +63,7 @@ int testFeast(int expectedCase, struct gameState *state) {
         else if (expectedCase == 1)        
 		{
             val = cardEffect(feast, province, 0, 0, state, 0, 0);
+            printf("Current value of coins is %d\n", state->coins);
             printf("CASE: Value of chosen card is greater than 5\n");
             assertTrue(expectedVal, val);
 		    printf("TEST: cardEffect returns -1.\n");
@@ -75,6 +76,7 @@ int testFeast(int expectedCase, struct gameState *state) {
         else if (expectedCase == 2)        
 		{
             val = cardEffect(feast, duchy, 0, 0, state, 0, 0);
+            printf("Current value of coins is %d\n", state->coins);
             printf("CASE: Value of chosen card is equal to 5\n");
             assertTrue(expectedVal, val);
 		    printf("TEST: cardEffect returns 0.\n");
@@ -83,12 +85,16 @@ int testFeast(int expectedCase, struct gameState *state) {
 
         }
 
-        // value of card more than total coins in players hand
+        // player does not have any coins currently in hand
         else
         {
-            state->handCount[0] = 2; // only count the first two silvers
-            val = cardEffect(feast, province, 0, 0, state, 0, 0);
-            printf("CASE: Value of chosen card is greater than total coins in player's hand\n");
+            for (int i =0; i<4; i++)
+            {
+                state->hand[0][i] = estate;
+            }
+            updateCoins(0, state, 0);
+            expectedCoins = state->coins;
+            printf("CASE: Player does not currently have any coins\n");
             assertTrue(expectedVal, val);
 		    printf("TEST: cardEffect returns -1.\n");
             assertTrue(expectedCoins, state->coins);
