@@ -60,7 +60,7 @@ int testFeast(int expectedCase, struct gameState *state) {
         }
 
         // value of card more than 5
-        else if (expectedCase == 1)        
+        /*else if (expectedCase == 1)        
 		{
             val = cardEffect(feast, province, 0, 0, state, 0, 0);
             printf("CASE: Value of chosen card is greater than 5\n");
@@ -69,10 +69,10 @@ int testFeast(int expectedCase, struct gameState *state) {
             assertTrue(expectedCoins, state->coins);
 		    printf("TEST: player's coins have not changed.\n");
 
-        }
+        }*/
 
         // value of card equal to 5
-        else if (expectedCase == 2)        
+        else if (expectedCase == 1)        
 		{
             val = cardEffect(feast, duchy, 0, 0, state, 0, 0);
             printf("CASE: Value of chosen card is equal to 5\n");
@@ -84,7 +84,7 @@ int testFeast(int expectedCase, struct gameState *state) {
         }
 
         // player does not have any coins currently in hand
-        else if (expectedCase == 3)
+        else if (expectedCase == 2)
         {
             for (int i =0; i<4; i++)
             {
@@ -130,7 +130,7 @@ int main (int argc, char** argv)
 	//hard coded tests
 	for(int i = 0; i < 10; i++){
 		int seed = rand() % 1000;
-		int expectedCase = rand() % 5;
+		int expectedCase = rand() % 4;
 		printf("\nStarting new round of tests.\n");
 		initializeGame(2, k, seed, &G);
 
