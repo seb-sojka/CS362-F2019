@@ -20,6 +20,11 @@ unitTest5: unittest5.c dominion.o rngs.o
 	./unit5 >> unittestresult.out
 	gcov dominion.c -b -f>> unittestresult.out
 
+unitTest6: unittest6.c dominion.o rngs.o
+	gcc  -o unit6 -g  unittest6.c dominion.o rngs.o $(CFLAGS)
+	./unit6 >> unittestresult.out
+	gcov dominion.c -b -f>> unittestresult.out
+
 testDrawCard: testDrawCard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
 
