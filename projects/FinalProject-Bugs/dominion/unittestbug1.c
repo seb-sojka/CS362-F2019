@@ -23,6 +23,19 @@ int assert(int expected, int actual , char* string)
 	return 1;
 }
 
+int assertFalse(int result, int actual , char* string)
+{
+	if(expected != actual)
+	{
+		printf("PASSED: Actual(%d) does not equal result(%d)-- %s\n", actual, result, string);
+		return 0;
+	}
+	else
+	{
+		printf("PASSED: Actual(%d) does equal result(%d)-- %s\n", actual, result, string);
+	} 
+	return 1;
+}
 int main()
 {
 	srand(time(0));
@@ -100,9 +113,12 @@ int main()
 	printf("\nTEST 1 RESULTS for Bug 1\n\n");
 	assert(0, returnValue, "Return value should be 0");
 	assert(4, G.handCount[player], "Player's handCount should be four.");
-	assert(1, G.discardCount[player], "Player's discard pile should be zero.");
+	assert(1, G.discardCount[player], "Player's discard pile should be 1.");
 	assert(3, getCost(copper)+3, "Cost of copper card to trash + 3 should be three.");
 	assert(6, getCost(silver), "Cost of silver card to gain should be 3");
-
+	for(int i = 0; i < G.playedCardCount; i++)
+	{
+		assertFalse(copper, G.discard[player][i]), "Trashed copper card not in discard pile");
+	}
 	return 0;
 }
