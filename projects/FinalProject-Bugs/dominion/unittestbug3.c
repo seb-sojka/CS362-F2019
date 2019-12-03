@@ -62,7 +62,7 @@ int main()
 	}
 	printf("\n");
 	printf("Cards in player's played pile: ");
-	for(int i = 0; i < G.playedCards[i]; i++)
+	for(int i = 0; i < G.playedCardCount; i++)
 	{
 		printf("%d ", G.playedCards[i]);
 	}
@@ -89,7 +89,7 @@ int main()
 	}
 	printf("\n");
 	printf("Cards in player's played pile: ");
-	for(int i = 0; i < G.playedCards[i]; i++)
+	for(int i = 0; i < G.playedCardCount; i++)
 	{
 		printf("%d ", G.playedCards[i]);
 	}
