@@ -98,7 +98,7 @@ int main()
 	//Assertions and results
 	printf("\nTEST 1 RESULTS for Bug 3\n\n");
 	assert(0, returnValue, "Return value should be zero");
-	assert(4, G.handCount[player], "Player's handCount should be four.");
+	assert(3, G.handCount[player], "Player's handCount should be four.");
 	assert(1, G.discardCount[player], "Player's discard pile should be one.");
 	assert(5, getCost(silver)+2, "Cost of silver card to trash + 2 should be five.");
 	assert(4, getCost(baron), "Cost of baron card to gain is four");
@@ -171,7 +171,7 @@ int main()
 	//Assertions and results
 	printf("\nTEST 2 RESULTS for Bug 3\n\n");
 	assert(-1, returnValue, "Return value should be negative one");
-	assert(4, G.handCount[player], "Player's handCount should be four.");
+	assert(5, G.handCount[player], "Player's handCount should be four.");
 	assert(0, G.discardCount[player], "Player's discard pile should be zero.");
 	assert(4, getCost(embargo)+2, "Cost of embargo card to trash + 2 should be four.");
 	assert(8, getCost(province), "Cost of province card to gain is eight");
