@@ -23,6 +23,19 @@ int assert(int expected, int actual , char* string)
 	return 1;
 }
 
+int assertFalse(int result, int actual , char* string)
+{
+	if(result != actual)
+	{
+		printf("PASSED: Actual(%d) does not equal result(%d)-- %s\n", actual, result, string);
+		return 0;
+	}
+	else
+	{
+		printf("PASSED: Actual(%d) does equal result(%d)-- %s\n", actual, result, string);
+	} 
+	return 1;
+}
 int main()
 {
 	srand(time(0));
@@ -70,7 +83,7 @@ int main()
 	printf("\n");
 	
 	//int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
-	int returnValue = cardEffect(mine, 1, gold, -1, &G, 0, 0); 
+	int returnValue = cardEffect(mine, 1, silver, -1, &G, 0, 0); 
 	
 	//after game state
 	printf("\nAFTER CARDEFFECT CALL\n");
@@ -98,11 +111,14 @@ int main()
 
 	//Assertions and results
 	printf("\nTEST 1 RESULTS for Bug 1\n\n");
-	assert(-1, returnValue, "Return value should be -1");
+	assert(0, returnValue, "Return value should be 0");
 	assert(4, G.handCount[player], "Player's handCount should be four.");
-	assert(0, G.discardCount[player], "Player's discard pile should be zero.");
+	assert(1, G.discardCount[player], "Player's discard pile should be 1.");
 	assert(3, getCost(copper)+3, "Cost of copper card to trash + 3 should be three.");
-	assert(6, getCost(gold), "Cost of gold card to gain should be six");
-
+	assert(3, getCost(silver), "Cost of silver card to gain should be 3");
+	for(int i = 0; i < G.discardCount[player]; i++)
+	{
+		assertFalse(copper, G.discard[player][i], "Trashed copper card not in discard pile");
+	}
 	return 0;
 }
