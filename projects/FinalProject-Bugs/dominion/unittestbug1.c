@@ -25,7 +25,7 @@ int assert(int expected, int actual , char* string)
 
 int assertFalse(int result, int actual , char* string)
 {
-	if(expected != actual)
+	if(result != actual)
 	{
 		printf("PASSED: Actual(%d) does not equal result(%d)-- %s\n", actual, result, string);
 		return 0;
@@ -118,7 +118,7 @@ int main()
 	assert(6, getCost(silver), "Cost of silver card to gain should be 3");
 	for(int i = 0; i < G.playedCardCount; i++)
 	{
-		assertFalse(copper, G.discard[player][i]), "Trashed copper card not in discard pile");
+		assertFalse(copper, G.discard[player][i], "Trashed copper card not in discard pile");
 	}
 	return 0;
 }
