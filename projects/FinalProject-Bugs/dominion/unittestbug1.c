@@ -116,7 +116,7 @@ int main()
 	assert(1, G.discardCount[player], "Player's discard pile should be 1.");
 	assert(3, getCost(copper)+3, "Cost of copper card to trash + 3 should be three.");
 	assert(6, getCost(silver), "Cost of silver card to gain should be 3");
-	for(int i = 0; i < G.playedCardCount; i++)
+	for(int i = 0; i < G.discardCount[player]; i++)
 	{
 		assertFalse(copper, G.discard[player][i], "Trashed copper card not in discard pile");
 	}
