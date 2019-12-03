@@ -126,4 +126,5 @@ int main()
 	
 	printf("cardEffect functin should return 0 without error.\n");
 	newAssertEqualInt(returnVal, 0, "return value from cardEffect when playing Ambassador");
+	printf("\n\n");
 }

@@ -198,4 +198,5 @@ int main()
 	newAssertEqualInt(testGame.numBuys, game.numBuys, "buy count");
 	printf("current player hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM + DRAWCARDS * numVictory);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM + DRAWCARDS * numVictory, "current player hand count");
+	printf("\n\n");
 }

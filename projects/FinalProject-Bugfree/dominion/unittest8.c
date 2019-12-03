@@ -179,5 +179,6 @@ int main()
 	updateCoins(game.whoseTurn, &game, 0);
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
 	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
+	printf("\n\n");
 	
 }
