@@ -85,6 +85,6 @@ unitTest11: unittest11.c dominion.o rngs.o
 	./unit11 >> unittestresult.out
 	gcov dominion.c -b -f>> unittestresult.out
 
-unittestresults: clean all unitTest8 unitTest9 unitTest10 unitTest11
+unittestresults: clean all unitTest1 unitTest2 unitTest3 unitTest4 unitTest5 unitTest6 unitTest7 unitTest8 unitTest9 unitTest10 unitTest11
 	cat dominion.c.gcov >> unittestresult.out
 
