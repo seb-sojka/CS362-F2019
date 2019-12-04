@@ -180,5 +180,15 @@ int main()
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
 	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
 	printf("\n\n");
+	printf("Test 5:Testing of updateCoins\n");
+	memset(&game, 0, sizeof(struct gameState));
+	memset(&testGame, 0, sizeof(struct gameState));
+	setUpRandomGame(&game);
+	game.handCount[game.whoseTurn] = 0;
+	int coinBefore = game.coins;
+	memcpy(&testGame, &game, sizeof(struct gameState));
+	updateCoins(testGame.whoseTurn, &testGame, 0);
+	printf("coin Count after calling updateCoin = %d, expected = %d\n", testGame.coins, coinBefore);
+	newAssertEqualInt(testGame.coins, game.coins, "played Card Count");
 	
 }
