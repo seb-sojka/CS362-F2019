@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define TESTCARD "cardEffect"
+#define TESTCARD "playCard"
 
 #define TESTLIMIT 10000
 
@@ -135,6 +135,7 @@ void setUpRandomGame(struct gameState* game)
 
 int main() 
 {
+	printf("\n");
 	printf("Testing Card is %s\n", TESTCARD);
 	srand(time(NULL));
 	struct gameState game, testGame;
@@ -142,41 +143,41 @@ int main()
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
 	setUpRandomGame(&game);
+	game.handCount[game.whoseTurn] = 2;
 	game.hand[game.whoseTurn][0] = baron;
 	game.hand[game.whoseTurn][1] = estate;
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	playCard(0, 1, 0, 0, &testGame);
-	updateCoins(game.whoseTurn, &game, 0);
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 4);
 	newAssertEqualInt(testGame.coins, game.coins + 4, "played Card Count");
 	printf("Test 2: Gain Coins from minion  card\n");
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
 	setUpRandomGame(&game);
+	game.handCount[game.whoseTurn] = 1;
 	game.hand[game.whoseTurn][0] = minion;
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	playCard(0, 1, 0, 0, &testGame);
-	updateCoins(game.whoseTurn, &game, 0);
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
 	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
 	printf("Test 3: Gain Coins from steward  card\n");
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
 	setUpRandomGame(&game);
+	game.handCount[game.whoseTurn] = 1;
 	game.hand[game.whoseTurn][0] = steward;
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	playCard(0, 2, 0, 0, &testGame);
-	updateCoins(game.whoseTurn, &game, 0);
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
 	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
 	printf("Test 4: Gain Coins from embargo card\n");
 	memset(&game, 0, sizeof(struct gameState));
 	memset(&testGame, 0, sizeof(struct gameState));
 	setUpRandomGame(&game);
+	game.handCount[game.whoseTurn] = 1;
 	game.hand[game.whoseTurn][0] = embargo;
 	memcpy(&testGame, &game, sizeof(struct gameState));
 	playCard(0, copper, 0, 0, &testGame);
-	updateCoins(game.whoseTurn, &game, 0);
 	printf("coin Count = %d, expected = %d\n", testGame.coins, game.coins + 2);
 	newAssertEqualInt(testGame.coins, game.coins + 2, "played Card Count");
 	printf("\n\n");
