@@ -105,7 +105,7 @@ int main()
 	printf("cardEffect functin should return -1 with error.\n");
 	newAssertEqualInt(returnVal, -1, "return value from cardEffect when playing Ambassador");
 	
-	printf("Test 2: Try to return 2 duchy to supply with only 2 in hand\n");
+	printf("Test 2: Try to return 2 duchy to supply with 3 in hand\n");
 	setUpRandomGame(&game);
 	game.handCount[game.whoseTurn] = 5;
 	game.hand[game.whoseTurn][0] = ambassador;

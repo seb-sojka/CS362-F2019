@@ -52,17 +52,6 @@ int valueInArray(int val, int array[])
 	return 0;
 }
 
-void setRevealCards(struct gameState* game)
-{
-	int nextPlayer = game->whoseTurn + 1;
-	if (game->numPlayers <= nextPlayer)
-	{
-		nextPlayer = 0;
-	}
-	game->deck[nextPlayer][game->deckCount[nextPlayer]-1] = -1;
-	game->deck[nextPlayer][game->deckCount[nextPlayer]-2] = -1;
-	
-}
 
 void setUpRandomGame(struct gameState* game, int* handPos)
 {
@@ -128,6 +117,7 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 				*handPos = j;
 			}
 		}
+
 		for(j = 0; j < game->deckCount[i]; j++)
 		{
 			game->deck[i][j] = -1;
@@ -160,8 +150,6 @@ void setUpRandomGame(struct gameState* game, int* handPos)
 	{
 		nextPlayer = 0;
 	}
-	game->deck[nextPlayer][game->deckCount[nextPlayer]-1] = -1;
-	game->deck[nextPlayer][game->deckCount[nextPlayer]-2] = -1;
 	//Number of coins and number of buys random between 0 and 100
 	//Number of number actions is between 1 and 100 as the card to be played
 	game->numActions = (rand() % 99) + 1;
@@ -196,6 +184,8 @@ int main()
 	newAssertEqualInt(testGame.numActions, game.numActions + ACTIONINCREASE * numAction, "Number actions");
 	printf("buy count = %d, expected = %d\n", testGame.numBuys, game.numBuys);
 	newAssertEqualInt(testGame.numBuys, game.numBuys, "buy count");
+	printf("current player deck count = %d, expected = %d\n", testGame.deckCount[currentPlayer], game.deckCount[currentPlayer] - DRAWCARDS * numVictory);
+	newAssertEqualInt(testGame.deckCount[currentPlayer], game.deckCount[currentPlayer] - DRAWCARDS * numVictory, "current player deck count");
 	printf("current player hand count = %d, expected = %d\n", testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM + DRAWCARDS * numVictory);
 	newAssertEqualInt(testGame.handCount[currentPlayer], game.handCount[currentPlayer] - DISCARDNUM + DRAWCARDS * numVictory, "current player hand count");
 	printf("\n\n");
